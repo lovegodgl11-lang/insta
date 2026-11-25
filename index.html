@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en" class=""><head><script>window.livecodes = window.livecodes || {};</script><title>Navrose insta app </title><meta name="title" content="Navrose insta app "><meta name="description" content="Same day order complete "><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="./style.css"><script src="https://cdn.jsdelivr.net/npm/es-module-shims@1.10.0/dist/es-module-shims.js" async=""></script><script type="importmap">{
+  "imports": {}
+}</script></head><body>
+
+
+<script id="ai2-storage-shim">
+/* App Inventor WebViewer storage fix: localStorage fail ho to memory + TinyDB (WebViewString) use karo */
+(function(){
+  var ok=true;
+  try{var k='__t'+Date.now();window.localStorage.setItem(k,'1');window.localStorage.removeItem(k);}catch(e){ok=false;}
+  var hasAI=!!(window.AppInventor&&window.AppInventor.setWebViewString);
+  if(ok&&!hasAI)return;               /* normal browser: kuch nahi badalna */
+  var mem={},real=ok?window.localStorage:null,t=null;
+  function push(){
+    clearTimeout(t);
+    t=setTimeout(function(){
+      try{if(hasAI)window.AppInventor.setWebViewString(JSON.stringify(mem));}catch(e){}
+    },400);
+  }
+  if(real){try{for(var i=0;i<real.length;i++){var kk=real.key(i);mem[kk]=real.getItem(kk);}}catch(e){}}
+  var shim={
+    getItem:function(k){return Object.prototype.hasOwnProperty.call(mem,k)?mem[k]:null;},
+    setItem:function(k,v){mem[String(k)]=String(v);if(real){try{real.setItem(k,v);}catch(e){}}push();},
+    removeItem:function(k){delete mem[k];if(real){try{real.removeItem(k);}catch(e){}}push();},
+    clear:function(){mem={};if(real){try{real.clear();}catch(e){}}push();},
+    key:function(i){return Object.keys(mem)[i]||null;}
+  };
+  Object.defineProperty(shim,'length',{get:function(){return Object.keys(mem).length;}});
+  try{Object.defineProperty(window,'localStorage',{value:shim,configurable:true});}catch(e){window.__ls=shim;}
+  /* App Inventor isse purana data wapas daalta hai: javascript:__restoreLS('...') */
+  window.__restoreLS=function(json){
+    try{
+      var d=typeof json==='string'?JSON.parse(json):json;
+      if(d&&typeof d==='object'){for(var k in d)mem[k]=d[k];}
+      if(typeof loadData==='function'){loadData();}
+      if(typeof updateNavBadges==='function'){updateNavBadges();}
+      if(typeof renderDashboard==='function'){renderDashboard();}
+    }catch(e){}
+  };
+})();
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#3e2723">
+<title>Navrose Insta – Express Alterations</title>
+<link rel="preconnect" href="https://www.gstatic.com" crossorigin=""><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" media="print" onload="this.media='all'">
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
+<style>
+:root{--br:#3e2723;--am:#fbbf24;--bg:#f6f2eb;--bd:#e9dccb;--tx:#2b1b17;--mu:#78716c;--gr:#16a34a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;min-height:100vh}
+.hide{display:none!important}
+button{font-family:inherit}
+header.top{background:linear-gradient(135deg,#4e342e,#3e2723 60%,#2d1b17);color:#fff;padding:calc(14px + env(safe-area-inset-top,0px)) 16px 16px}
+.top .row1{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.top h1{margin:0;font-size:1.2rem;font-weight:800;color:var(--am)}
+.top .sub{font-size:.76rem;color:#e7d9c8;font-weight:600;margin-top:2px}
+.bolt{background:var(--am);color:var(--br);font-weight:800;font-size:.72rem;border-radius:9999px;padding:5px 11px;white-space:nowrap}
+.tabs{display:flex;background:#fff;border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:20}
+.tabs button{flex:1;border:0;background:none;padding:13px 6px;font-weight:800;font-size:.9rem;color:var(--mu);cursor:pointer;border-bottom:3px solid transparent}
+.tabs button.on{color:var(--br);border-bottom-color:var(--am);background:#fffbeb}
+main{max-width:720px;margin:0 auto;padding:12px 12px calc(100px + env(safe-area-inset-bottom,0px))}
+.banner{border-radius:14px;padding:11px 13px;margin-bottom:12px;font-weight:700;font-size:.88rem;line-height:1.5}
+.banner.warn{background:#fef3c7;color:#92400e;border:1px solid #fcd34d}
+.banner.err{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5}
+.banner.info{background:#e0e7ff;color:#3730a3;border:1px solid #c7d2fe}
+.search{width:100%;border:1.5px solid #d9c9b3;border-radius:14px;padding:12px 14px;font-size:16px;font-weight:600;background:#fff;font-family:inherit;color:var(--tx)}
+.search:focus,.in:focus{outline:none;border-color:#f59e0b;box-shadow:0 0 0 4px rgba(251,191,36,.28)}
+.cats{display:flex;gap:8px;overflow-x:auto;padding:10px 0 4px;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cat{flex:0 0 auto;border:1.5px solid var(--bd);background:#fff;color:var(--br);font-weight:800;font-size:.82rem;border-radius:9999px;padding:8px 14px;cursor:pointer}
+.cat.on{background:var(--br);color:var(--am);border-color:var(--br)}
+.sec{font-weight:800;font-size:1rem;margin:12px 2px 8px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:560px){.grid{grid-template-columns:repeat(3,1fr)}}
+.pc{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:10px;display:flex;flex-direction:column;box-shadow:0 3px 10px rgba(62,39,35,.06)}
+.pc .ic{height:62px;border-radius:12px;background:linear-gradient(135deg,#fff7e0,#fde8b4);display:flex;align-items:center;justify-content:center;font-size:2rem;position:relative}
+.pc .eta{position:absolute;left:6px;bottom:6px;background:#fff;border-radius:8px;padding:2px 7px;font-size:.68rem;font-weight:800;color:var(--br);box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.pc .nm{font-weight:800;font-size:.9rem;margin-top:8px;line-height:1.25}
+.pc .it{font-size:.74rem;color:var(--mu);font-weight:700}
+.pc .bt{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:10px;gap:6px}
+.pc .pr{font-weight:800;font-size:.95rem}
+.add{border:1.5px solid var(--gr);background:#f0fdf4;color:var(--gr);font-weight:800;font-size:.82rem;border-radius:10px;padding:7px 18px;cursor:pointer;letter-spacing:.03em}
+.add:active{background:#dcfce7}
+.step{display:inline-flex;align-items:center;background:var(--gr);color:#fff;border-radius:10px;overflow:hidden}
+.step button{border:0;background:none;color:#fff;font-weight:800;font-size:1.1rem;width:30px;height:32px;cursor:pointer}
+.step span{min-width:22px;text-align:center;font-weight:800;font-size:.9rem}
+.cartbar{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:30;max-width:700px;margin:0 auto;background:var(--gr);color:#fff;border:0;border-radius:16px;padding:13px 16px;display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:.95rem;cursor:pointer;box-shadow:0 8px 24px rgba(22,163,74,.4);width:calc(100% - 20px)}
+.cartbar small{display:block;font-weight:600;font-size:.72rem;opacity:.9}
+.ov{position:fixed;inset:0;z-index:50;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch}
+.ovtop{position:sticky;top:0;z-index:5;background:var(--br);color:#fff;padding:calc(10px + env(safe-area-inset-top,0px)) 12px 10px;display:flex;align-items:center;gap:10px}
+.ovtop button{width:42px;height:42px;border-radius:12px;border:0;background:rgba(255,255,255,.16);color:#fff;font-size:24px;font-weight:700;cursor:pointer}
+.ovtop h2{margin:0;font-size:1.05rem;font-weight:800;flex:1}
+.ovtop small{display:block;font-size:.7rem;color:#fcd34d;font-weight:700}
+.ovb{max-width:640px;margin:0 auto;padding:12px 12px calc(40px + env(safe-area-inset-bottom,0px))}
+.card{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 3px 12px rgba(62,39,35,.05)}
+.card h3{margin:0 0 10px;font-size:.98rem;font-weight:800}
+label.l{display:block;font-size:.72rem;font-weight:800;color:#92400e;text-transform:uppercase;letter-spacing:.04em;margin:0 0 4px}
+.in{width:100%;border:1.5px solid #d9c9b3;border-radius:11px;padding:11px 12px;font-size:16px;font-weight:600;font-family:inherit;background:#fff;color:var(--tx)}
+textarea.in{resize:vertical;min-height:64px;font-weight:500}
+.f{margin-bottom:11px}
+.cl{display:flex;gap:10px;justify-content:space-between;align-items:flex-start;padding:10px 0;border-bottom:1px dashed var(--bd)}
+.cl:last-child{border-bottom:0}
+.cl .t{font-weight:800;font-size:.92rem}.cl .s{font-size:.76rem;color:var(--mu);font-weight:700;margin-top:2px}
+.cl .r{text-align:right;white-space:nowrap}
+.cl .nin{width:100%;margin-top:6px;border:1px solid var(--bd);border-radius:9px;padding:7px 9px;font-size:14px;font-family:inherit;font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid #d9c9b3;background:#fff;border-radius:12px;padding:10px 13px;font-weight:800;font-size:.85rem;color:var(--br);cursor:pointer}
+.chip.on{background:var(--br);color:var(--am);border-color:var(--br)}
+.chip:disabled{opacity:.4;cursor:not-allowed}
+.hint{font-size:.76rem;color:var(--mu);font-weight:600;margin-top:5px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:13px;padding:14px 16px;font-weight:800;font-size:.98rem;cursor:pointer;text-decoration:none}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.gr{background:var(--gr);color:#fff}.btn.dk{background:var(--br);color:#fff}.btn.am{background:var(--am);color:var(--br)}.btn.gy{background:#e7e5e4;color:var(--br)}.btn.rd{background:#fee2e2;color:#991b1b}.btn.bl{background:#e0e7ff;color:#3730a3}.btn.wa{background:#25d366;color:#fff}
+.btn.full{width:100%}
+.thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.th{position:relative;width:70px;height:70px}.th img{width:100%;height:100%;object-fit:cover;border-radius:10px;border:1px solid var(--bd)}
+.th button{position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;border:2px solid #fff;background:#dc2626;color:#fff;font-size:.7rem;font-weight:800;cursor:pointer}
+.badge{display:inline-block;padding:3px 11px;border-radius:9999px;font-size:.74rem;font-weight:800;white-space:nowrap}
+.b-New{background:#fef3c7;color:#92400e}.b-Confirmed{background:#dbeafe;color:#1e40af}.b-InProgress{background:#e0e7ff;color:#3730a3}.b-Ready{background:#dcfce7;color:#166534}.b-Delivered{background:#d1fae5;color:#064e3b}.b-Rejected,.b-Cancelled{background:#fee2e2;color:#991b1b}
+.ocard{background:#fff;border:1px solid var(--bd);border-left:6px solid var(--am);border-radius:14px;padding:12px 14px;margin-bottom:10px;cursor:pointer}
+.ocard .r1{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ocard .no{font-weight:800}
+.ocard .sm{font-size:.8rem;color:var(--mu);font-weight:600;margin-top:4px;overflow-wrap:anywhere}
+.pb{height:7px;border-radius:9999px;background:#f1e6d6;margin-top:9px;overflow:hidden}.pb i{display:block;height:100%;background:linear-gradient(90deg,#f59e0b,#16a34a);border-radius:9999px}
+.paybox{margin-top:14px;border:2px dashed var(--am);border-radius:16px;padding:14px;background:#fffbeb;text-align:center}
+.paybox .pt{font-weight:800;font-size:1rem}.paybox .pa{font-size:1.05rem;margin:4px 0 10px}
+.qrimg{width:220px;max-width:100%;border-radius:14px;border:1px solid var(--bd);background:#fff;padding:6px;cursor:zoom-in;transition:width .2s}
+.qrimg.big{width:100%;cursor:zoom-out}
+.upirow{display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left;background:#fff;border:1px solid var(--bd);border-radius:12px;padding:10px 12px;margin-top:10px}
+.upiid{font-size:1rem;overflow-wrap:anywhere}
+.obar{display:flex;gap:10px;overflow-x:auto;padding:4px 0 8px;scrollbar-width:none}.obar::-webkit-scrollbar{display:none}
+.ofc{flex:0 0 auto;max-width:230px;text-align:left;border:1.5px dashed #f59e0b;background:linear-gradient(135deg,#fffbeb,#fef3c7);border-radius:14px;padding:10px 12px;cursor:pointer;display:flex;flex-direction:column;gap:2px;font-family:inherit;color:var(--br)}
+.ofc b{font-size:.92rem}.ofc span{font-size:.74rem;font-weight:600;color:#92400e}.ofc i{font-size:.72rem;font-weight:800;font-style:normal;color:#b45309}
+.avatar{width:54px;height:54px;border-radius:50%;background:var(--br);color:var(--am);display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:800;flex:0 0 auto}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.stats>div{background:#fffbeb;border:1px solid var(--bd);border-radius:12px;padding:10px 6px;text-align:center}.stats b{display:block;font-size:1.15rem}.stats span{font-size:.7rem;font-weight:700;color:var(--mu)}
+.nbx{display:flex;gap:8px;align-items:flex-start}.nbx .nt{flex:1;line-height:1.5}.nbx .x{border:0;background:none;font-size:1.2rem;font-weight:800;color:inherit;cursor:pointer;line-height:1;padding:0 2px}
+.nbx .btn{padding:10px 14px;font-size:.88rem;margin-top:8px}
+.otpin{letter-spacing:.5em;text-align:center;font-size:1.6rem;font-weight:800}
+.cd{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:800;letter-spacing:-.01em}
+.eta-box{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;border-radius:16px;padding:14px 16px;margin-bottom:12px;text-align:center}
+.eta-box .big{font-size:1.9rem;font-weight:800;line-height:1.1}
+.eta-box .sm{font-size:.8rem;font-weight:700;opacity:.92;margin-top:3px}
+.eta-box.wait{background:linear-gradient(135deg,#f59e0b,#d97706)}
+.eta-box.ready{background:linear-gradient(135deg,#0ea5e9,#0369a1)}
+.tl{margin:4px 0 0 4px}.tl .s{position:relative;padding:0 0 16px 34px;min-height:38px}
+.tl .s:before{content:'';position:absolute;left:11px;top:24px;bottom:0;width:3px;background:#e7d9c8}.tl .s:last-child:before{display:none}.tl .s.done:before{background:#22c55e}
+.tl .d{position:absolute;left:0;top:0;width:25px;height:25px;border-radius:50%;background:#e7d9c8;color:#fff;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800}
+.tl .s.done .d{background:#22c55e}.tl .s.cur .d{background:var(--am);color:var(--br);box-shadow:0 0 0 5px rgba(251,191,36,.35);animation:pl 1.6s infinite}
+@keyframes pl{50%{box-shadow:0 0 0 9px rgba(251,191,36,.1)}}
+.tl .n{font-weight:800;font-size:.93rem;color:var(--mu)}.tl .s.done .n,.tl .s.cur .n{color:var(--br)}
+.tl .t{font-size:.75rem;color:var(--mu);font-weight:600;margin-top:2px}
+.tl .nt{font-size:.8rem;color:#92400e;font-weight:600;margin-top:3px;background:#fffbeb;border-radius:8px;padding:4px 8px;display:inline-block}
+.br{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px dashed var(--bd);font-size:.9rem}
+.br small{display:block;color:var(--mu);font-weight:600}.br b{white-space:nowrap}
+.bt2{display:flex;justify-content:space-between;padding:5px 0;font-weight:700}
+.bt2.big{font-size:1.1rem;font-weight:800;border-top:2px solid var(--br);margin-top:4px;padding-top:9px}
+.bt2.red b{color:#b91c1c}.bt2.grn b{color:#15803d}
+.done-card{text-align:center;padding:24px 14px}
+.done-card .no{font-size:1.6rem;font-weight:800;color:var(--br);background:#fffbeb;border:2px dashed var(--am);border-radius:14px;padding:10px;margin:12px 0;display:inline-block;min-width:60%}
+#ring{position:fixed;top:0;left:0;right:0;z-index:300;background:#e11d48;color:#fff;padding:12px 14px;padding-top:max(12px,env(safe-area-inset-top));box-shadow:0 8px 24px rgba(0,0,0,.35);display:none}
+#ring.show{display:block}
+#ring b{font-size:15px}
+#ring .bell{display:inline-block;font-size:28px;animation:bell .8s infinite}
+@keyframes bell{0%,100%{transform:rotate(0)}25%{transform:rotate(18deg)}75%{transform:rotate(-18deg)}}
+#ring .row{display:flex;gap:10px;align-items:center}
+#ring .acts{display:flex;gap:8px;margin-top:10px}
+#ring .acts button{flex:1;border:0;border-radius:11px;padding:11px;font-weight:800;font-size:.9rem;cursor:pointer}
+.chipx{display:inline-block;padding:6px 12px;border-radius:9999px;font-size:.78rem;font-weight:800;background:#e7e5e4;color:#57534e;margin:0 6px 6px 0}
+.chipx.on{background:#dcfce7;color:#166534}.chipx.bad{background:#fee2e2;color:#991b1b}.chipx.warn{background:#fef3c7;color:#92400e}
+#toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#111827;color:#fff;padding:11px 16px;border-radius:12px;font-weight:700;font-size:.88rem;z-index:200;box-shadow:0 6px 18px rgba(0,0,0,.3);max-width:90vw;text-align:center;transition:opacity .25s}
+#toast.hide{opacity:0;pointer-events:none;display:block!important}
+
+/* ===== PRO MOBILE-FIRST THEME ===== */
+:root{--br:#2b1d19;--am:#f5b301;--bg:#f4f2ee;--bd:#ece6dd;--tx:#1c1411;--mu:#7a716b;--gr:#12a150;--sf:#fff;--rd:18px;--sh:0 1px 2px rgba(28,20,17,.05),0 6px 18px rgba(28,20,17,.06)}
+body{background:var(--bg);font-size:15px;letter-spacing:-.005em}
+header.top{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.92);backdrop-filter:saturate(1.6) blur(14px);-webkit-backdrop-filter:saturate(1.6) blur(14px);color:var(--tx);padding:calc(10px + env(safe-area-inset-top,0px)) 14px 10px;border-bottom:1px solid var(--bd)}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.logo{width:38px;height:38px;border-radius:12px;background:var(--br);color:var(--am);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex:0 0 auto}
+.top h1{font-size:1.02rem;color:var(--tx);font-weight:800;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:56vw}
+.top .sub{font-size:.7rem;color:#b45309;margin-top:1px;font-weight:700}.top .sub:empty{display:none}
+.lchip{border:0;background:var(--br);color:#fff;font-weight:700;font-size:.8rem;border-radius:9999px;padding:9px 15px;cursor:pointer;flex:0 0 auto}
+.tabs{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:40;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--bd);border-bottom:0;padding:6px 10px calc(6px + env(safe-area-inset-bottom,0px));gap:6px}
+.tabs button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 4px;border:0;border-radius:14px;font-size:.7rem;font-weight:700;color:var(--mu);background:none}
+.tabs button i{font-style:normal;font-size:1.3rem;line-height:1}
+.tabs button.on{background:#fff4d6;color:var(--br);border:0}
+main{padding:12px 14px calc(150px + env(safe-area-inset-bottom,0px))}
+.card{border:0;border-radius:var(--rd);padding:16px;box-shadow:var(--sh);margin-bottom:14px}
+.card h3{font-size:.95rem;margin-bottom:12px;letter-spacing:-.01em}
+.search{border:0;background:#fff;box-shadow:var(--sh);border-radius:14px;padding:14px 16px;margin-top:2px}
+.search:focus,.in:focus{box-shadow:0 0 0 3px rgba(245,179,1,.35);border-color:var(--am)}
+.in{border:1.5px solid var(--bd);border-radius:12px;padding:13px 14px;background:#fcfbf9}
+.cats{padding:12px 0 6px}
+.cat{border:0;background:#fff;box-shadow:var(--sh);color:var(--tx);font-weight:700;padding:9px 16px}
+.cat.on{background:var(--br);color:#fff}
+.sec{font-size:.95rem;margin:14px 2px 8px}
+.grid{gap:12px}
+.pc{border:0;border-radius:var(--rd);padding:12px;box-shadow:var(--sh)}
+.pc .ic{height:74px;border-radius:14px;background:linear-gradient(145deg,#fff8e6,#fde9b9);font-size:2.2rem}
+.pc .nm{font-size:.92rem}.pc .pr{font-size:1rem}
+.add{border:1.5px solid var(--gr);background:#fff;border-radius:11px;padding:8px 20px;font-size:.8rem}
+.step{border-radius:11px}
+.cartbar{bottom:calc(74px + env(safe-area-inset-bottom,0px));left:12px;right:12px;border-radius:16px;padding:14px 18px;box-shadow:0 10px 26px rgba(18,161,80,.35);background:var(--gr)}
+#toast{bottom:calc(140px + env(safe-area-inset-bottom,0px))}
+.btn{border-radius:14px;padding:14px 18px;font-weight:700;font-size:.95rem;transition:transform .08s}
+.btn:active{transform:scale(.98)}
+.btn.sm{padding:9px 14px;font-size:.8rem;border-radius:11px}
+.btn.dk{background:var(--br)}.btn.am{background:var(--am);color:var(--br)}
+.chip{border:1.5px solid var(--bd);border-radius:12px;font-weight:700}.chip.on{background:var(--br);color:#fff;border-color:var(--br)}
+.ovtop{background:#fff;color:var(--tx);border-bottom:1px solid var(--bd);padding:calc(10px + env(safe-area-inset-top,0px)) 12px 10px}
+.ovtop button{background:#f4f2ee;color:var(--tx);border-radius:12px}
+.ovtop small{color:#b45309}
+.ovb{padding:14px 14px calc(40px + env(safe-area-inset-bottom,0px))}
+.ocard{border:0;border-left:0;border-radius:var(--rd);box-shadow:var(--sh);padding:14px 16px;position:relative}
+.ocard:before{content:'';position:absolute;left:0;top:14px;bottom:14px;width:4px;border-radius:0 4px 4px 0;background:var(--am)}
+.badge{font-weight:700;padding:4px 11px}
+.banner{border-radius:14px;border:0;font-weight:600}
+.hero{background:linear-gradient(145deg,#2b1d19,#46302a);color:#fff}
+.hero .hrow{display:flex;gap:12px;align-items:center}
+.hero .pn{font-weight:800;font-size:1.15rem;overflow-wrap:anywhere}.hero .pm{font-size:.82rem;color:#e8d9c7;font-weight:600;margin-top:2px}
+.hero .avatar{background:var(--am);color:var(--br)}
+.hero .stats>div{background:rgba(255,255,255,.1);border:0;color:#fff}.hero .stats span{color:#e8d9c7}
+.hero .btn.gy{background:rgba(255,255,255,.16);color:#fff}
+.hero .paybox{background:#fff;color:var(--tx)}
+.okmark{width:68px;height:68px;border-radius:50%;background:var(--gr);color:#fff;font-size:2.2rem;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto}
+.regok{background:#e8f8ee;color:#0f7a3c;font-weight:700;font-size:.85rem;border-radius:11px;padding:9px 12px;margin-bottom:11px}
+.srows{margin-bottom:10px}
+.srow{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--bd)}
+.srow:last-child{border-bottom:0}.srow .si{font-size:1.15rem;width:26px;text-align:center}.srow .sn{flex:1;font-weight:700}
+.sv{font-size:.74rem;font-weight:800;border-radius:9999px;padding:4px 12px;background:#eee9e2;color:#6b625b}.sv.on{background:#dcf6e4;color:#0f7a3c}.sv.off{background:#fde4e4;color:#a42626}
+.abtns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.abtns .btn{padding:11px 6px;font-size:.8rem}
+#notifBanner{margin-bottom:10px;background:#fff7e0;border-radius:13px;padding:11px 13px;font-weight:600;font-size:.85rem;line-height:1.45;color:#7a4b00}
+#notifBanner .btn{padding:9px 14px;font-size:.82rem;margin-top:8px}
+.eta-box{border-radius:var(--rd)}
+.paybox{border:0;background:#fffaf0;border-radius:var(--rd)}
+@media(min-width:720px){.tabs{max-width:420px;left:50%;right:auto;transform:translateX(-50%);border-radius:20px 20px 0 0;border:1px solid var(--bd)}}
+</style>
+
+
+<header class="top">
+  <div class="row1"><div class="brand"><div class="logo">⚡</div><div><h1 id="shopName">Navrose Stitching Point</h1><div class="sub" id="slotLine"></div></div></div><button type="button" id="loginChip" class="lchip">Login</button></div>
+</header>
+<nav class="tabs">
+  <button type="button" data-t="shop" class="on"><i>🛍</i><span>Services</span></button>
+  <button type="button" data-t="track"><i>👤</i><span>Profile</span></button>
+</nav>
+
+<main>
+  <div id="netErr" class="banner err hide"></div>
+  <div id="closed" class="banner warn hide"></div>
+  <div id="notice" class="banner info hide"></div>
+
+  <section id="v-shop">
+    <div id="offersBar"></div>
+    <input id="q" class="search" type="search" placeholder="Search services">
+    <div class="cats" id="cats"></div>
+    <div id="grid"></div>
+  </section>
+
+  <section id="v-done" class="hide">
+    <div class="card done-card">
+      <div class="okmark">✓</div>
+      <h2 style="margin:10px 0 4px">Booking Ho Gayi</h2>
+      <div class="no" id="doneNo">INS-0000</div><div id="doneSlot" style="font-weight:800;margin:-4px 0 14px"></div>
+      <button type="button" class="btn am full" id="doneTrack" style="margin-bottom:10px">Live Track</button>
+      <button type="button" class="btn gy full" id="doneNew">+ Aur Service</button>
+    </div>
+  </section>
+
+  <section id="v-track" class="hide">
+    <div class="card hero hide" id="profCard">
+      <div class="hrow"><div class="avatar" id="pAv">?</div><div style="min-width:0;flex:1"><div id="pName" class="pn"></div><div id="pMob" class="pm"></div></div><button type="button" class="btn gy sm" id="tOut">Logout</button></div>
+      <div class="stats"><div><b id="pCnt">0</b><span>Orders</span></div><div><b id="pDue">₹0</b><span>Outstanding</span></div><div><b id="pDone">0</b><span>Delivered</span></div></div>
+      <div id="pPay"></div>
+    </div>
+    <div class="card" id="trkCard">
+      <div id="trkOut">
+        <h3>Login</h3>
+        <div class="f"><input id="tMobile" class="in" type="tel" inputmode="numeric" placeholder="Registered mobile number" maxlength="14" aria-label="Registered mobile number"></div>
+        <button type="button" class="btn gr full" id="tGo">WhatsApp OTP se Login</button>
+      </div>
+      <div id="trkIn" class="hide"><span id="trkM" class="hide"></span></div>
+    </div>
+    <div class="card" id="alCard">
+      <h3>Alerts &amp; Notifications</h3>
+      <div id="notifBanner" class="hide"></div>
+      <div id="alChips" class="srows"></div>
+      <div class="abtns">
+        <button type="button" class="btn am" id="alEnable">🔔 Enable</button>
+        <button type="button" class="btn gy" id="alStandby">💤 Standby</button>
+        <button type="button" class="btn gy" id="alTest">🔊 Test</button>
+      </div>
+      <div id="alClocks"></div>
+    </div>
+    <div id="tList"></div>
+  </section>
+</main>
+
+<button type="button" class="cartbar hide" id="cartbar"><span id="cbL"></span><span id="cbR">View Cart ›</span></button>
+
+<div id="ovCart" class="ov hide" role="dialog" aria-modal="true">
+  <div class="ovtop"><button type="button" id="cartX" aria-label="Back">‹</button><h2>Aapka Cart<small id="cartSub"></small></h2></div>
+  <div class="ovb" id="cartBody"></div>
+</div>
+<div id="ov" class="ov hide" role="dialog" aria-modal="true">
+  <div class="ovtop"><button type="button" id="ovX" aria-label="Back">‹</button><h2><span id="ovT"></span><small id="ovS"></small></h2><span id="ovB"></span></div>
+  <div class="ovb" id="ovBody"></div>
+</div>
+<div id="ring" role="alert">
+  <div class="row"><span class="bell">🔔</span><div style="flex:1"><b id="ring-title">Aapka order ready hai!</b><div id="ring-txt" style="font-size:.82rem;overflow-wrap:anywhere;margin-top:2px"></div></div></div>
+  <div class="acts"><button type="button" id="ringStop" style="background:#fff;color:#be123c">🛑 Stop</button><button type="button" id="ringSnz" style="background:#fbbf24;color:#3e2723">⏱ 5 min baad</button></div>
+</div>
+<div id="ovLogin" class="ov hide" role="dialog" aria-modal="true">
+  <div class="ovtop"><button type="button" id="lgX" aria-label="Back">‹</button><h2>Login<small>WhatsApp OTP</small></h2></div>
+  <div class="ovb" id="lgBody"></div>
+</div>
+<div id="toast" class="hide"></div>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyC0_DQIiyaVQllFH4pxH1Dm3r2kFXXoOgc",
+  authDomain: "navrosetailorapp.firebaseapp.com",
+  databaseURL: "https://navrosetailorapp-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "navrosetailorapp",
+  storageBucket: "navrosetailorapp.firebasestorage.app",
+  messagingSenderId: "574369461681",
+  appId: "1:574369461681:web:dbe9d417706ab0b5643990"
+};
+const C = (id, item, service, price, mins) => ({ id, item, service, price, mins, on: true });
+const DEF_CAT = [
+  C('pant-hem','Pant','Length Short (Hemming)',80,30), C('pant-fit','Pant','Waist / Fitting',150,60), C('pant-zip','Pant','Zip Change',100,30),
+  C('shirt-slv','Shirt','Sleeve Short',120,45), C('shirt-fit','Shirt','Fitting',180,90), C('shirt-btn','Shirt','Button Fix',30,15),
+  C('kurta-len','Kurta','Length Short',100,45), C('kurta-fit','Kurta','Fitting',180,90),
+  C('blouse-fit','Blouse','Fitting',150,60), C('blouse-hook','Blouse','Hook / Button Fix',50,20),
+  C('dress-fit','Dress','Fitting',250,120), C('saree-fall','Saree','Fall & Pico',120,60), C('dupatta-pico','Dupatta','Pico',60,30),
+  C('pajama-elas','Pajama','Elastic Change',60,20), C('skirt-fit','Skirt','Waist Fitting',150,60), C('jacket-slv','Jacket','Sleeve Short',250,120),
+  C('lengha-hem','Lengha','Hemming',300,180), C('rafu','Repair','Rafu / Patch',80,30)
+];
+const DEF = {
+  open: true, shopName: 'Navrose Stitching Point', phone: '', upi: '', upiName: '', upiQr: '', closedMsg: 'Abhi Insta orders band hain. Kripya baad mein try karein.', notice: '',
+  stages: [
+    { id: 'placed', name: 'Booking Online', type: 'start' },
+    { id: 'confirmed', name: 'Booking Confirmed', type: 'normal' },
+    { id: 'processing', name: 'Alteration Processing', type: 'normal' },
+    { id: 'ready', name: 'Ready for Pickup', type: 'ready' },
+    { id: 'handover', name: 'Handover', type: 'final' }
+  ],
+  catalog: DEF_CAT
+};
+const ICONS = { pant:'👖', shirt:'👔', kurta:'🥻', blouse:'👚', dress:'👗', saree:'🥻', dupatta:'🧣', pajama:'🩳', skirt:'👗', jacket:'🧥', lengha:'👘', repair:'🧵', custom:'✍️' };
+const iconOf = it => ICONS[String(it || '').toLowerCase().split(/[\s\/]/)[0]] || '🧵';
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s === null || s === undefined ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+const arr = x => Array.isArray(x) ? x.filter(v => v !== null && v !== undefined) : (x && typeof x === 'object' ? Object.keys(x).map(k => x[k]) : []);
+const num = v => { const n = parseFloat(v); return isNaN(n) ? 0 : n; };
+const r2 = v => Math.round(v * 100) / 100;
+const money = n => '₹' + r2(num(n)).toLocaleString('en-IN', { maximumFractionDigits: 2 });
+const stClass = s => 'b-' + String(s || 'New').replace(/\s+/g, '');
+const stLabel = s => ({ New: 'Confirm hona baaki', Confirmed: 'Confirmed', 'In Progress': 'Processing', Ready: 'Ready – Pickup Karein', Delivered: 'Handover Done', Rejected: 'Reject', Cancelled: 'Cancelled' }[s] || s || 'New');
+const etaTxt = m => { m = Math.round(num(m)); if (m < 60) return m + ' min'; const h = Math.floor(m / 60), r = m % 60; return h + ' hr' + (r ? ' ' + r + ' min' : ''); };
+function fmtDT(iso) { const d = new Date(iso); return isNaN(d) ? '' : d.toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }); }
+function fmtT(ms) { return new Date(ms).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }); }
+function normMobile(s) { let d = String(s || '').replace(/\D/g, ''); if (d.length > 10) d = d.slice(-10); return d.length === 10 ? d : null; }
+let toastT;
+function toast(m, ms) { const t = $('toast'); t.textContent = m; t.classList.remove('hide'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.add('hide'), ms || 3000); }
+function lsGet(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } }
+
+let db = null, S = JSON.parse(JSON.stringify(DEF)), cat = 'All', query = '', cart = lsGet('instaCart', []), photos = [], busy = false, reqEta = 0;
+const T = { orders: {}, refs: [], open: null, mobile: null };
+cart = Array.isArray(cart) ? cart.filter(l => l && l.qty > 0) : [];
+
+function initFirebase() {
+  try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+    db.ref('instaSettings').on('value', snap => {
+      const v = snap.val() || {};
+      S = Object.assign({}, JSON.parse(JSON.stringify(DEF)), v);
+      const c = arr(v.catalog); S.catalog = c.length ? c : DEF_CAT;
+      const st = arr(v.stages); S.stages = st.length >= 2 ? st : DEF.stages;
+      applySettings();
+    }, () => { });
+    db.ref('instaSlots').on('value', sn => { SLOTS = sn.val() || {}; drawSlotLine(); if (!$('ovCart').classList.contains('hide')) refreshSlotCard(); }, () => { });
+    db.ref('instaSlotCap').on('value', sn => { SCAP = sn.val() || {}; drawSlotLine(); if (!$('ovCart').classList.contains('hide')) refreshSlotCard(); }, () => { });
+  } catch (e) {
+    console.error(e);
+    $('netErr').textContent = '⚠ Server se connect nahi ho paya. Internet check karke page dobara kholein.';
+    $('netErr').classList.remove('hide');
+  }
+}
+const catalog = () => arr(S.catalog).filter(c => c && c.on !== false && (c.item || c.service));
+function refreshSlotCard() { const keep = { n: ($('cName') || {}).value, m: ($('cMobile') || {}).value, t: ($('cNotes') || {}).value }; drawCart(); if (keep.n && $('cName')) $('cName').value = keep.n; if (keep.t && $('cNotes')) $('cNotes').value = keep.t; }
+function applySettings() {
+  if (S.otpApi === undefined) S.otpApi = '';
+  $('shopName').textContent = S.shopName || DEF.shopName;
+  document.title = (S.shopName || DEF.shopName) + ' – Insta Alterations';
+  $('closed').textContent = '🔒 ' + (S.closedMsg || DEF.closedMsg);
+  $('closed').classList.toggle('hide', S.open !== false);
+  if (S.notice) { $('notice').textContent = '📢 ' + S.notice; $('notice').classList.remove('hide'); } else $('notice').classList.add('hide');
+  // drop cart lines whose service was removed/disabled (custom lines stay)
+  const ids = {}; catalog().forEach(c => ids[c.id] = c);
+  cart.forEach(l => { if (l.sid && ids[l.sid]) { l.rate = num(ids[l.sid].price); l.mins = num(ids[l.sid].mins) || 30; } });
+  cart = cart.filter(l => !l.sid || ids[l.sid]); lsSet('instaCart', cart);
+  drawShop(); drawCartBar(); drawSlotLine(); if (typeof updateAlertChips === 'function' && $('alChips')) { try { updateAlertChips(); } catch (e) { } }
+  if (!$('ovCart').classList.contains('hide')) drawCart();
+  if (T.open) drawDetail();
+  drawTrackList();
+}
+
+/* ---------- shop ---------- */
+function drawShop() {
+  { const ob = $('offersBar'); if (ob) ob.innerHTML = offersBarHtml(); }
+  const all = catalog(), cats = ['All'].concat(Array.from(new Set(all.map(c => c.item).filter(Boolean))));
+  if (cats.indexOf(cat) < 0) cat = 'All';
+  $('cats').innerHTML = cats.map(c => `<button type="button" class="cat${c === cat ? ' on' : ''}" data-c="${esc(c)}">${c === 'All' ? '⚡ Sab' : esc(iconOf(c) + ' ' + c)}</button>`).join('');
+  const ql = query.toLowerCase();
+  const rows = all.filter(c => (cat === 'All' || c.item === cat) && (!ql || (c.item + ' ' + c.service).toLowerCase().indexOf(ql) >= 0));
+  let h = `<div class="sec">${cat === 'All' ? 'Sabhi Alteration Services' : esc(cat)}</div><div class="grid">`;
+  h += rows.map(c => {
+    const inCart = cart.find(l => l.sid === c.id);
+    return `<div class="pc"><div class="ic">${iconOf(c.item)}<span class="eta">⏱ ${esc(etaTxt(c.mins || 30))}</span></div><div class="nm">${esc(c.service || c.item)}</div><div class="it">${esc(c.item)}</div>
+      <div class="bt"><span class="pr">${money(c.price)}</span>${inCart ? `<span class="step"><button type="button" data-dec="${esc(c.id)}" aria-label="Kam">−</button><span>${inCart.qty}</span><button type="button" data-inc="${esc(c.id)}" aria-label="Zyada">+</button></span>` : `<button type="button" class="add" data-add="${esc(c.id)}">ADD</button>`}</div></div>`;
+  }).join('');
+  const cu = cart.filter(l => l.custom).length;
+  if (!ql || 'custom kuch aur'.indexOf(ql) >= 0) h += `<div class="pc"><div class="ic">✍️</div><div class="nm">Kuch aur / Custom</div><div class="it">Apni zarurat likhein</div><div class="bt"><span class="pr" style="font-size:.75rem;color:var(--mu)">Rate dukaan batayegi</span><button type="button" class="add" data-custom="1">ADD${cu ? ' +' : ''}</button></div></div>`;
+  h += '</div>';
+  if (!rows.length && ql) h += '<div class="card" style="text-align:center;margin-top:10px;color:var(--mu);font-weight:700">Ye service nahi mili. "Kuch aur / Custom" se apni zarurat likh sakte hain.</div>';
+  $('grid').innerHTML = h;
+}
+$('q').addEventListener('input', e => { query = e.target.value; drawShop(); });
+$('offersBar').addEventListener('click', e => { const b = e.target.closest('[data-ofbar]'); if (!b) return; const of = offersList().find(o => o.id === b.dataset.ofbar); if (!of) return; offerId = of.id; lsSet('instaOffer', offerId); toast('🎁 ' + of.title + ' select ho gaya' + (cart.length ? '' : '. Services add karein, cart mein lag jayega.') + (of.code ? ' (Code: ' + of.code + ')' : ''), 4500); drawCartBar(); });
+$('cats').addEventListener('click', e => { const b = e.target.closest('[data-c]'); if (!b) return; cat = b.dataset.c; drawShop(); });
+$('grid').addEventListener('click', e => {
+  const t = e.target;
+  const a = t.closest('[data-add]'), inc = t.closest('[data-inc]'), dec = t.closest('[data-dec]'), cu = t.closest('[data-custom]');
+  if (a || inc) {
+    const id = (a || inc).dataset.add || (a || inc).dataset.inc, c = catalog().find(x => x.id === id); if (!c) return;
+    const l = cart.find(x => x.sid === id);
+    if (l) l.qty = Math.min(20, l.qty + 1); else cart.push({ sid: id, item: c.item, service: c.service, rate: num(c.price), mins: num(c.mins) || 30, qty: 1, note: '' });
+  } else if (dec) {
+    const l = cart.find(x => x.sid === dec.dataset.dec); if (!l) return;
+    l.qty--; if (l.qty <= 0) cart = cart.filter(x => x !== l);
+  } else if (cu) {
+    cart.push({ sid: '', custom: true, item: 'Custom', service: '', rate: 0, mins: 60, qty: 1, note: '' }); toast('Custom item cart mein add hua. Cart mein jaakar likhein.');
+  } else return;
+  lsSet('instaCart', cart); drawShop(); drawCartBar();
+});
+
+/* ---------- cart ---------- */
+const cartCount = () => cart.reduce((t, l) => t + l.qty, 0);
+const cartTotal = () => r2(cart.reduce((t, l) => t + l.rate * l.qty, 0));
+const cartEta = () => cart.reduce((m, l) => Math.max(m, num(l.mins) || 30), 0) + Math.max(0, cart.length - 1) * 5;
+function drawCartBar() {
+  const n = cartCount(), onShop = !$('v-shop').classList.contains('hide'), overlay = !$('ovCart').classList.contains('hide') || !$('ov').classList.contains('hide');
+  $('cartbar').classList.toggle('hide', !n || !onShop || overlay);
+  if (n) $('cbL').innerHTML = `${n} item${n > 1 ? 's' : ''} · ${money(cartTotal())}${cart.some(l => l.custom) ? '+' : ''}<small>⏱ ~${esc(etaTxt(cartEta()))} mein ready</small>`;
+}
+$('cartbar').addEventListener('click', () => { reqEta = 0; openCart(); });
+function openCart() { $('ovCart').classList.remove('hide'); document.body.style.overflow = 'hidden'; drawCart(); $('ovCart').scrollTop = 0; drawCartBar(); }
+function closeCart() { $('ovCart').classList.add('hide'); document.body.style.overflow = $('ov').classList.contains('hide') ? '' : 'hidden'; drawCartBar(); }
+$('cartX').addEventListener('click', closeCart);
+
+/* ---------- registration (naam sirf pehli baar) ---------- */
+const REG = { m: '', name: '', known: false };
+async function lookupReg(m) {
+  if (!db || !m) return; REG.m = m; REG.known = false; REG.name = ''; applyReg();
+  try { const sn = await db.ref('instaCustomers/' + m).once('value'), v = sn.val(); if (REG.m !== m) return; if (v && v.name) { REG.known = true; REG.name = v.name; } } catch (e) { }
+  applyReg(); if (typeof drawProfile === 'function') drawProfile();
+}
+function applyReg() {
+  const w = $('nameWrap'), st = $('regStat'); if (!w) return;
+  w.classList.toggle('hide', REG.known);
+  if (st) {
+    const mine = getAuth() && getAuth().m === REG.m || (lsGet('instaMobile', '') === REG.m && lsGet('instaMy', []).length);
+    st.innerHTML = REG.known && mine ? '<div class="regok">✓ ' + esc(REG.name) + '</div>' : '';
+  }
+}
+
+/* ---------- offers ---------- */
+const todayStr = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+const offersList = () => arr(S.offers).filter(o => o && o.on !== false && o.title && (!o.validTill || String(o.validTill).slice(0, 10) >= todayStr()));
+const offerOK = (of, sub) => !!of && sub >= num(of.min) && sub > 0;
+function offerDisc(of, sub) { if (!of) return 0; let d = of.type === 'flat' ? num(of.value) : sub * num(of.value) / 100; if (of.type !== 'flat' && num(of.max) > 0) d = Math.min(d, num(of.max)); return r2(Math.max(0, Math.min(d, sub))); }
+let offerId = lsGet('instaOffer', null);
+const curOffer = () => offersList().find(o => o.id === offerId) || null;
+const offerTxt = o => (o.type === 'flat' ? '₹' + num(o.value) + ' off' : num(o.value) + '% off' + (num(o.max) > 0 ? ' (max ₹' + num(o.max) + ')' : '')) + (num(o.min) > 0 ? ' · ₹' + num(o.min) + '+ ke order par' : '') + (o.validTill ? ' · ' + String(o.validTill).slice(0, 10) + ' tak' : '');
+function cartPayable() { const sub = cartTotal(), of = curOffer(); return r2(sub - (of && offerOK(of, sub) ? offerDisc(of, sub) : 0)); }
+function offersCardHtml() {
+  const list = offersList(), sub = cartTotal(); if (!list.length) return '';
+  return '<div class="card"><h3>🎁 Offers</h3>' + list.map(o => { const ok = offerOK(o, sub), on = offerId === o.id && ok; return `<div class="cl"><div style="flex:1;min-width:0"><div class="t">${esc(o.title)}${o.code ? ' <span class="badge b-Confirmed" style="margin-left:4px">' + esc(o.code) + '</span>' : ''}</div><div class="s">${esc(offerTxt(o))}${o.desc ? '<br>' + esc(o.desc) : ''}</div>${!ok ? '<div class="s" style="color:#b45309">₹' + num(o.min) + ' ya zyada ki services jodein</div>' : ''}</div><div class="r"><button type="button" class="chip${on ? ' on' : ''}" data-offer="${esc(o.id)}" ${ok ? '' : 'disabled'}>${on ? '✓ Applied' : 'Apply'}</button></div></div>`; }).join('')
+    + '<div style="display:flex;gap:8px;margin-top:10px"><input id="promoIn" class="in" placeholder="Promo code" style="text-transform:uppercase"><button type="button" class="btn dk" id="promoBtn" style="padding:10px 16px">Apply</button></div></div>';
+}
+function offersBarHtml() {
+  const list = offersList(); if (!list.length) return '';
+  return '<div class="sec" style="margin-top:2px">🎁 Offers</div><div class="obar">' + list.map(o => `<button type="button" class="ofc" data-ofbar="${esc(o.id)}"><b>${esc(o.title)}</b><span>${esc(offerTxt(o))}</span>${o.code ? '<i>Code: ' + esc(o.code) + '</i>' : ''}</button>`).join('') + '</div>';
+}
+
+/* ---------- slots (har ghante limited orders) ---------- */
+let SLOTS = {}, SCAP = {}, slotSel = null;
+const hkey = d => d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0') + String(d.getHours()).padStart(2, '0');
+const slotCapDef = () => (S.slotCap != null && S.slotCap !== '') ? Math.max(0, parseInt(S.slotCap, 10) || 0) : 3;
+const capOf = key => SCAP && SCAP[key] != null ? Math.max(0, num(SCAP[key])) : slotCapDef();
+const fmtH = h => { const ap = h >= 12 ? 'PM' : 'AM', x = h % 12 || 12; return x + ':00 ' + ap; };
+function upcomingSlots() {
+  const open = Math.min(23, Math.max(0, parseInt(S.openHour, 10) || 10)), close = Math.min(24, Math.max(open + 1, parseInt(S.closeHour, 10) || 20));
+  const out = [], now = new Date(); let d = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours());
+  for (let n = 0; n < 48 && out.length < 8; n++, d = new Date(d.getTime() + 3600000)) {
+    const h = d.getHours(); if (h < open || h >= close) continue;
+    const key = hkey(d), booked = Math.max(0, num(SLOTS[key])), cap = capOf(key), tomorrow = d.getDate() !== now.getDate();
+    out.push({ key, start: d.getTime(), label: (tomorrow ? 'Kal ' : '') + fmtH(h) + ' – ' + fmtH(h + 1 > 23 ? 0 : h + 1).replace(/^12:00 AM$/, '12:00 AM'), booked, cap, left: Math.max(0, cap - booked) });
+  }
+  return out;
+}
+function pickSlot() { const l = upcomingSlots(); let s0 = l.find(x => x.key === slotSel && x.left > 0); if (!s0) s0 = l.find(x => x.left > 0) || null; return { list: l, cur: s0 }; }
+function slotCardHtml() {
+  const { list, cur } = pickSlot(); if (!list.length) return '';
+  const first = list[0], fullNow = first.left === 0;
+  let h = `<div class="card"><h3>🕒 Aapka Slot</h3>`;
+  if (fullNow && cur) h += `<div class="banner warn" style="margin-bottom:10px">⚠ <b>${esc(first.label)}</b> ka slot <b>full</b> hai (${first.booked}/${first.cap}). Agla khali slot: <b>${esc(cur.label)}</b> – wahi chuna gaya hai.</div>`;
+  else if (!cur) h += '<div class="banner err" style="margin-bottom:10px">Abhi koi slot khali nahi hai. Thodi der baad try karein.</div>';
+  h += '<div class="chips">' + list.map(x => `<button type="button" class="chip${cur && cur.key === x.key ? ' on' : ''}" data-slot="${x.key}" ${x.left ? '' : 'disabled'}>${esc(x.label)}<br><span style="font-weight:600;font-size:.72rem">${x.left ? x.left + ' slot khali' : 'Full'}</span></button>`).join('') + '</div></div>';
+  return h;
+}
+function drawSlotLine() {
+  const el = $('slotLine'); if (!el) return; const { list, cur } = pickSlot();
+  if (!list.length) { el.textContent = ''; return; }
+  el.textContent = list[0].left > 0 ? '🟢 Abhi ' + list[0].left + ' slot khali (' + list[0].label + ')' : (cur ? '🟠 Abhi slot full · agla khali: ' + cur.label : '🔴 Aaj ke slot full');
+}
+
+const ETA_OPTS = [0, 60, 120, 180, 240];
+function drawCart() {
+  if (!cart.length) { closeCart(); return; }
+  const g = id => $(id) ? $(id).value : '', keep = { n: g('cName'), m: g('cMobile'), t: g('cNotes') };
+  const est = cartEta(), eff = Math.max(reqEta, est);
+  $('cartSub').textContent = cartCount() + ' item · ' + money(cartTotal());
+  let h = '<div class="card"><h3>🧵 Services</h3>' + cart.map((l, i) => `<div class="cl"><div style="flex:1;min-width:0"><div class="t">${l.custom ? '✍️ Custom alteration' : esc(l.service || l.item)}</div>
+    <div class="s">${l.custom ? 'Neeche likhein kya karwana hai' : esc(l.item) + ' · ' + money(l.rate) + ' each'}</div>
+    <input class="nin" data-i="${i}" data-f="note" maxlength="140" placeholder="${l.custom ? 'Jaise: Jeans ka waist 2 inch tight karna hai' : 'Note (optional): kitna inch, kahan se...'}" value="${esc(l.note)}"></div>
+    <div class="r"><span class="step"><button type="button" data-cd="${i}" aria-label="Kam">−</button><span>${l.qty}</span><button type="button" data-ci="${i}" aria-label="Zyada">+</button></span><div style="font-weight:800;margin-top:6px">${l.custom ? '<span style="font-size:.72rem;color:var(--mu)">Quote</span>' : money(l.rate * l.qty)}</div></div></div>`).join('') + '<button type="button" class="btn gy full" id="moreBtn" style="margin-top:8px;padding:11px">+ Aur Service Jodein</button></div>';
+  h += `<div class="card"><h3>⏱ Kitne Time Mein Chahiye?</h3><div class="chips">${ETA_OPTS.map(m => { const v = m || est; const dis = v < est; return `<button type="button" class="chip${(m === 0 ? reqEta === 0 : reqEta === m) ? ' on' : ''}" data-eta="${m}" ${dis && m ? 'disabled' : ''}>${m === 0 ? '⚡ Jald se jald (~' + esc(etaTxt(est)) + ')' : esc(etaTxt(m)) + ' mein'}</button>`; }).join('')}</div></div>`;
+  h += `<div class="card"><h3>📷 Photo <span style="font-weight:600;color:var(--mu)">(optional)</span></h3><input id="photoIn" type="file" accept="image/*" multiple class="in"><div class="thumbs" id="thumbs">${thumbs()}</div></div>`;
+  h += slotCardHtml() + offersCardHtml();
+  const authM = getAuth() ? getAuth().m : '', mv = authM || keep.m || lsGet('instaMobile', '');
+  h += `<div class="card"><h3>👤 Aapki Jaankari</h3>
+    <div class="f"><label class="l" for="cMobile">Mobile Number *</label><input id="cMobile" class="in" type="tel" inputmode="numeric" autocomplete="tel" maxlength="14" placeholder="10 digit mobile" value="${esc(mv)}" ${authM ? 'readonly' : ''}></div>
+    <div id="regStat"></div>
+    <div class="f" id="nameWrap" style="margin-bottom:11px"><label class="l" for="cName">Aapka Naam *</label><input id="cName" class="in" type="text" autocomplete="name" placeholder="Poora naam" value="${esc(lsGet('instaName', ''))}"></div>
+    <div class="f" style="margin:0"><label class="l" for="cNotes">Note</label><textarea id="cNotes" class="in" maxlength="300" placeholder="Note (optional)"></textarea></div></div>`;
+  { const sub = cartTotal(), of = curOffer(), d = of && offerOK(of, sub) ? offerDisc(of, sub) : 0;
+    h += `<div class="card"><h3>🧾 Bill Estimate</h3><div class="bt2"><span>Services</span><b>${money(sub)}${cart.some(l => l.custom) ? ' + custom' : ''}</b></div>${d ? `<div class="bt2" style="color:#15803d"><span>🎁 ${esc(of.title)}</span><b>- ${money(d)}</b></div><div class="bt2 big"><span>Estimate Total</span><b>${money(sub - d)}</b></div>` : ''}</div>`; }
+  h += `<button type="button" class="btn gr full" id="placeBtn" style="padding:16px;font-size:1.05rem" ${S.open === false ? 'disabled' : ''}>⚡ Booking Confirm Karein · ${money(cartPayable())}${cart.some(l => l.custom) ? '+' : ''}</button>`;
+  $('cartBody').innerHTML = h;
+  if (keep.n) $('cName').value = keep.n; if (keep.m && !authM) $('cMobile').value = keep.m; if (keep.t) $('cNotes').value = keep.t;
+  { const mm = normMobile($('cMobile').value); if (mm) { if (REG.m === mm) applyReg(); else lookupReg(mm); } else applyReg(); }
+}
+$('cartBody').addEventListener('input', e => {
+  const t = e.target; if (t.dataset && t.dataset.f === 'note') { const l = cart[+t.dataset.i]; if (l) { l.note = t.value; lsSet('instaCart', cart); } }
+  if (t.id === 'cName') lsSet('instaName', t.value);
+  if (t.id === 'cMobile') { const mm = normMobile(t.value); if (mm) { if (REG.m !== mm) lookupReg(mm); } else { REG.m = ''; REG.known = false; applyReg(); } }
+});
+$('cartBody').addEventListener('click', e => {
+  const t = e.target, ci = t.closest('[data-ci]'), cd = t.closest('[data-cd]'), eta = t.closest('[data-eta]');
+  if (ci) { const l = cart[+ci.dataset.ci]; if (l) l.qty = Math.min(20, l.qty + 1); }
+  else if (cd) { const i = +cd.dataset.cd, l = cart[i]; if (l) { l.qty--; if (l.qty <= 0) cart.splice(i, 1); } }
+  else if (eta) { reqEta = +eta.dataset.eta; }
+  else if (t.closest('#moreBtn')) { closeCart(); return; }
+  else if (t.closest('[data-slot]')) { slotSel = t.closest('[data-slot]').dataset.slot; }
+  else if (t.closest('[data-offer]')) { const id = t.closest('[data-offer]').dataset.offer; offerId = offerId === id ? null : id; lsSet('instaOffer', offerId); }
+  else if (t.closest('#promoBtn')) { const c = String(($('promoIn') || {}).value || '').trim().toUpperCase(), of = offersList().find(o => String(o.code || '').toUpperCase() === c && c); if (!of) { toast('Ye promo code sahi nahi hai ya expire ho gaya.'); return; } if (!offerOK(of, cartTotal())) { toast('₹' + num(of.min) + ' ya zyada ki services jodein.'); return; } offerId = of.id; lsSet('instaOffer', offerId); toast('🎁 ' + of.title + ' lag gaya!'); }
+  else if (t.closest('#cartLogin')) { e.preventDefault(); openLogin(($('cMobile') || {}).value, () => { openCart(); }); return; }
+  else if (t.closest('#placeBtn')) { placeOrder(); return; }
+  else if (t.closest('[data-rp]')) { photos.splice(+t.closest('[data-rp]').dataset.rp, 1); }
+  else return;
+  lsSet('instaCart', cart); drawShop(); drawCart(); drawCartBar();
+});
+function thumbs() { return photos.map((p, i) => `<div class="th"><img src="${p}" alt="Photo ${i + 1}"><button type="button" data-rp="${i}" aria-label="Hataayein">✕</button></div>`).join(''); }
+
+/* photos */
+const MAXCH = 30000;
+function compress(file) {
+  return new Promise(resolve => {
+    if (!file || !/^image\//.test(file.type || '')) { resolve(null); return; }
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => {
+      try {
+        const w0 = img.naturalWidth || img.width, h0 = img.naturalHeight || img.height; if (!w0 || !h0) throw 0;
+        let best = null;
+        outer: for (const md of [640, 560, 480, 400, 320]) {
+          const sc = Math.min(1, md / Math.max(w0, h0)), cv = document.createElement('canvas');
+          cv.width = Math.max(1, Math.round(w0 * sc)); cv.height = Math.max(1, Math.round(h0 * sc));
+          const cx = cv.getContext('2d'); cx.fillStyle = '#fff'; cx.fillRect(0, 0, cv.width, cv.height); cx.drawImage(img, 0, 0, cv.width, cv.height);
+          for (const q of [0.7, 0.6, 0.5, 0.4]) { const d = cv.toDataURL('image/jpeg', q); if (!best || d.length < best.length) best = d; if (d.length <= MAXCH) { best = d; break outer; } }
+        }
+        URL.revokeObjectURL(url); resolve(best);
+      } catch (e) { URL.revokeObjectURL(url); resolve(null); }
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(null); };
+    img.src = url;
+  });
+}
+$('cartBody').addEventListener('change', async e => {
+  if (e.target.id !== 'photoIn') return;
+  const files = Array.from(e.target.files || []); e.target.value = '';
+  const room = 3 - photos.length; if (room <= 0) { toast('Maximum 3 photos.'); return; }
+  for (const f of files.slice(0, room)) { const d = await compress(f); if (d) photos.push(d); else toast('Ek photo padh nahi paye.'); }
+  const th = $('thumbs'); if (th) th.innerHTML = thumbs();
+});
+
+/* ---------- place order ---------- */
+async function nextNumber() {
+  try {
+    const r = await Promise.race([db.ref('instaCounter').transaction(v => (parseInt(v, 10) || 1000) + 1), new Promise((_, rej) => setTimeout(() => rej(new Error('t')), 6000))]);
+    const n = r && r.snapshot ? r.snapshot.val() : null; if (n) return 'INS-' + n;
+  } catch (e) { }
+  return 'INS-' + String(Date.now()).slice(-6);
+}
+async function releaseSlot(key) { try { await db.ref('instaSlots/' + key).transaction(v => Math.max(0, num(v) - 1)); } catch (e) { } }
+async function placeOrder() {
+  if (busy) return;
+  if (!db) { toast('Server se connect nahi hai. Internet check karein.'); return; }
+  if (S.open === false) { toast('Abhi Insta orders band hain.'); return; }
+  const m = normMobile($('cMobile').value);
+  if (!m) { toast('Sahi 10 digit mobile number likhein.'); $('cMobile').focus(); return; }
+  if (REG.m !== m) await lookupReg(m);
+  const name = REG.known ? REG.name : ($('cName').value || '').trim();
+  if (name.length < 2) { toast('Apna naam likhein (sirf pehli baar).'); $('cName').focus(); return; }
+  if (S.requireLogin && !authOK(m)) { toast('Order ke liye pehle WhatsApp OTP se login karein.', 4000); openLogin(m, () => { openCart(); }); return; }
+  const bad = cart.find(l => l.custom && !String(l.note || '').trim());
+  if (bad) { toast('Custom item mein likhein ki kya karwana hai.'); return; }
+  if (Date.now() - lsGet('instaLast', 0) < 15000) { toast('Thoda ruk kar dobara try karein.'); return; }
+  const sp = pickSlot();
+  if (!sp.cur) { toast('Abhi koi slot khali nahi hai. Thodi der baad try karein.', 4500); return; }
+  busy = true; const pb = $('placeBtn'); pb.disabled = true; pb.textContent = 'Booking ho rahi hai...';
+  enableAlerts(false);
+  let reserved = null;
+  try {
+    // slot reserve (transaction – race-safe): 3 se zyada order ek ghante mein nahi ja sakte
+    const sk = sp.cur.key;
+    const tr = await db.ref('instaSlots/' + sk).transaction(v => (num(v) < capOf(sk)) ? num(v) + 1 : undefined);
+    if (!tr.committed) { toast('⚠ Ye slot abhi full ho gaya. Agla slot chuna ja raha hai.', 5000); busy = false; slotSel = null; drawCart(); return; }
+    reserved = sk;
+    const key = db.ref('instaOrders').push().key, no = await nextNumber(), now = new Date().toISOString(), st0 = S.stages[0], est = cartEta(), eta = Math.max(reqEta, est);
+    const sub = cartTotal(), of = curOffer(), okOf = of && offerOK(of, sub), disc = okOf ? offerDisc(of, sub) : 0;
+    const order = {
+      orderNumber: no, customerName: name, customerMobile: m, serviceType: 'alteration',
+      lines: cart.map(l => ({ item: l.custom ? 'Custom' : l.item, service: l.custom ? '' : l.service, qty: l.qty, rate: l.rate, mins: l.mins, note: String(l.note || '').trim(), custom: !!l.custom })),
+      notes: ($('cNotes').value || '').trim(), etaMin: eta, estTotal: sub, estDiscount: disc, photoCount: photos.length,
+      slotKey: sk, slotStart: sp.cur.start, slotLabel: sp.cur.label,
+      status: 'New', stage: st0.id, stageIdx: 0, trackLog: [{ id: st0.id, name: st0.name, at: now, note: 'Booking receive hui' }],
+      createdAt: now, createdTs: Date.now(), lastUpdated: now, source: 'insta'
+    };
+    if (okOf) order.offer = { id: of.id, title: of.title, code: of.code || '', type: of.type === 'flat' ? 'flat' : 'pct', value: num(of.value), max: num(of.max) };
+    const upd = {}; upd['instaOrders/' + key] = order; if (photos.length) upd['instaPhotos/' + key] = photos; upd['instaByMobile/' + m + '/' + key] = true;
+    if (!REG.known) upd['instaCustomers/' + m] = { name, mobile: m, createdAt: now };
+    await Promise.race([db.ref().update(upd), new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 20000))]);
+    reserved = null;
+    lsSet('instaLast', Date.now()); lsSet('instaMobile', m); lsSet('instaName', name); REG.m = m; REG.known = true; REG.name = name;
+    { const my = lsGet('instaMy', []); my.unshift({ k: key, no, at: now }); lsSet('instaMy', my.slice(0, 40)); }
+    T.justMobile = m; T.justNo = no; $('doneNo').textContent = no; $('doneSlot').textContent = '🕒 Aapka slot: ' + sp.cur.label;
+    cart = []; photos = []; lsSet('instaCart', cart); reqEta = 0; offerId = null; lsSet('instaOffer', null); slotSel = null;
+    closeCart(); drawShop(); drawCartBar(); showView('done');
+    loadTrack(m, undefined, true);
+  } catch (err) {
+    console.error(err); if (reserved) releaseSlot(reserved);
+    toast('Booking nahi ho payi. Internet check karke dobara try karein.', 5000);
+    const b2 = $('placeBtn'); if (b2) { b2.disabled = false; b2.textContent = '⚡ Booking Confirm Karein'; }
+  } finally { busy = false; }
+}
+$('doneNew').addEventListener('click', () => showView('shop'));
+$('doneTrack').addEventListener('click', () => { $('tMobile').value = T.justMobile || ''; showView('track'); if (T.justMobile) loadTrack(T.justMobile, T.justNo); });
+
+/* ---------- views / tabs ---------- */
+function showView(v) {
+  ['shop', 'done', 'track'].forEach(x => $('v-' + x).classList.toggle('hide', x !== v));
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === (v === 'done' ? 'shop' : v)));
+  window.scrollTo(0, 0); drawCartBar();
+}
+document.querySelector('.tabs').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return; showView(b.dataset.t);
+  if (b.dataset.t === 'track') { const a = getAuth(), m = a ? a.m : normMobile($('tMobile').value) || normMobile(lsGet('instaMobile', '')); if (m) loadTrack(m); }
+});
+
+/* ---------- tracking ---------- */
+function detach() { T.refs.forEach(r => { try { r.off(); } catch (e) { } }); T.refs = []; T.orders = {}; }
+async function loadTrack(m, openNo, silent) {
+  if (!db) { if (!silent) toast('Server se connect nahi hai.'); return; }
+  T.mobile = m; lsSet('instaMobile', m); detach();
+  $('tList').innerHTML = '<div class="banner info">Orders dhundh rahe hain…</div>';
+  try {
+    const snap = await db.ref('instaByMobile/' + m).once('value'), all = Object.keys(snap.val() || {}), logged = authOK(m);
+    const dev = new Set(lsGet('instaMy', []).map(x => x.k)), keys = logged ? all : all.filter(k => dev.has(k));
+    lsSet('instaWatch', m);
+    if (!keys.length) { $('tList').innerHTML = all.length && !logged ? '<div class="card" style="text-align:center;color:var(--mu);font-weight:700;line-height:1.6">🔐 Is number ke orders dekhne ke liye <b>WhatsApp OTP se login</b> karein.<br><button type="button" class="btn gr" id="lgGo" style="margin-top:10px">📲 Login Karein</button></div>' : '<div class="card" style="text-align:center;color:var(--mu);font-weight:700;line-height:1.6">Is mobile number par koi Insta order nahi mila.<br>Number sahi hai? Dobara check karein.</div>'; return; }
+    let first = true;
+    keys.forEach(k => {
+      const ref = db.ref('instaOrders/' + k); T.refs.push(ref);
+      ref.on('value', s => {
+        const v = s.val(); if (v) { v._k = k; T.orders[k] = v; } else delete T.orders[k];
+        drawTrackList(); if (T.open === k) drawDetail();
+        if (first && openNo && v && v.orderNumber === openNo) { first = false; openDetail(k); }
+      });
+    });
+  } catch (e) { console.error(e); $('tList').innerHTML = '<div class="banner err">Orders load nahi ho paye. Dobara try karein.</div>'; }
+}
+function stageIdx(o) { const i = S.stages.findIndex(s => s.id === o.stage); return i >= 0 ? i : Math.min(S.stages.length - 1, parseInt(o.stageIdx, 10) || 0); }
+const summary = o => arr(o.lines).map(l => (num(l.qty) > 1 ? l.qty + '× ' : '') + [l.item, l.service].filter(Boolean).join(' – ')).join(', ');
+const dead = o => o.status === 'Rejected' || o.status === 'Cancelled';
+function dueMs(o) { if (!o.confirmedAt) return null; const t = new Date(o.confirmedAt).getTime(); if (isNaN(t)) return null; const m = o.bill && o.bill.etaMin != null ? num(o.bill.etaMin) : num(o.etaMin); return t + m * 60000; }
+function etaLine(o) {
+  if (dead(o)) return '';
+  if (o.status === 'Delivered') return '✅ Handover ho chuka hai';
+  if (o.status === 'Ready') return '🎉 Ready hai – dukaan se collect karein';
+  const d = dueMs(o); if (d === null) return '⏳ Confirm hone ka intezaar (~' + etaTxt(o.etaMin) + ' confirm ke baad)';
+  return '⏱ <span class="cd" data-cd="' + d + '">' + cdTxt(d - Date.now()) + '</span> · ' + fmtT(d) + ' tak';
+}
+/* Uc6 jaisa live countdown: "1h 5m 30s बाकी", zero par "अभी तैयार होगा!" */
+function cdTxt(diff) {
+  if (diff <= 0) return 'अभी तैयार होगा!';
+  const h = Math.floor(diff / 3600000), m = Math.floor(diff % 3600000 / 60000), s = Math.floor(diff % 60000 / 1000);
+  return (h ? h + 'h ' : '') + m + 'm ' + s + 's बाकी';
+}
+function tickCountdowns() {
+  const now = Date.now();
+  document.querySelectorAll('[data-cd]').forEach(el => { el.textContent = cdTxt(+el.dataset.cd - now); });
+}
+setInterval(tickCountdowns, 1000);
+function drawTrackList() {
+  drawProfile();
+  if (!T.mobile) return;
+  const list = Object.keys(T.orders).map(k => T.orders[k]).sort((a, b) => (b.createdTs || 0) - (a.createdTs || 0)); if (!list.length) return;
+  $('tList').innerHTML = list.map(o => {
+    const idx = stageIdx(o), n = S.stages.length, pct = dead(o) ? 0 : Math.round(idx / Math.max(1, n - 1) * 100);
+    return `<div class="ocard" data-k="${esc(o._k)}"><div class="r1"><b class="no">${esc(o.orderNumber)}</b><span class="badge ${stClass(o.status)}">${esc(stLabel(o.status))}</span></div><div class="sm">${esc(summary(o))}</div><div class="sm">📅 ${esc(fmtDT(o.createdAt))}</div>${dead(o) ? '' : '<div class="sm" style="color:var(--br);font-weight:800">' + etaLine(o) + '</div><div class="pb"><i style="width:' + pct + '%"></i></div>'}</div>`;
+  }).join('');
+}
+function outstandingOf(o) { if (dead(o) || !o.bill) return 0; const bl = arr(o.bill.lines), sub = bl.reduce((t, l) => t + num(l.amount), 0), disc = Math.min(num(o.bill.discount), sub), paid = arr(o.bill.payments).reduce((t, p) => t + num(p.amount), 0); return Math.max(0, r2(sub - disc - paid)); }
+function drawProfile() {
+  const a = getAuth(), c = $('profCard'); if (!c) return;
+  if (!a) { c.classList.add('hide'); return; }
+  const list = T.mobile === a.m ? Object.keys(T.orders).map(k => T.orders[k]) : [];
+  const name = (REG.m === a.m && REG.name) || (list[0] && list[0].customerName) || lsGet('instaName', '') || 'Customer';
+  const due = r2(list.reduce((t, o) => t + outstandingOf(o), 0)), done = list.filter(o => o.status === 'Delivered').length;
+  $('pAv').textContent = String(name).trim().charAt(0).toUpperCase() || '?'; $('pName').textContent = name; $('pMob').textContent = '+91 ' + a.m;
+  $('pCnt').textContent = list.length; $('pDue').textContent = money(due); $('pDue').style.color = due > 0 ? '#ff8a80' : '#7ee2a0'; $('pDone').textContent = done;
+  $('pPay').innerHTML = due > 0 && (S.upi || S.upiQr) ? '<div class="paybox"><div class="pt">💳 Outstanding Payment</div><div class="pa">Baaki: <b>' + money(due) + '</b></div>' + (S.upiQr ? '<img class="qrimg" src="' + esc(S.upiQr) + '" alt="Payment QR code" data-qrt="1">' : '') + (S.upi ? '<div class="upirow"><div><div class="l" style="margin:0">GPay / UPI ID' + (S.upiName ? ' · ' + esc(S.upiName) : '') + '</div><b class="upiid">' + esc(S.upi) + '</b></div><button type="button" class="btn dk" data-copy="' + esc(S.upi) + '" style="padding:10px 14px;font-size:.85rem">📋 Copy</button></div>' : '') + '</div>' : '';
+  c.classList.remove('hide'); drawClocks();
+}
+$('profCard').addEventListener('click', e => {
+  const q = e.target.closest('[data-qrt]'); if (q) { q.classList.toggle('big'); return; }
+  const cp = e.target.closest('[data-copy]'); if (cp) { const t = cp.dataset.copy; const ok = () => toast('UPI ID copy ho gayi: ' + t, 3500); if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok, () => prompt('UPI ID copy karein:', t)); else prompt('UPI ID copy karein:', t); }
+});
+$('tList').addEventListener('click', e => { if (e.target.closest('#lgGo')) { openLogin(T.mobile); return; } const c = e.target.closest('.ocard'); if (c) openDetail(c.dataset.k); });
+$('tGo').addEventListener('click', () => { const m = normMobile($('tMobile').value); if (!m) { toast('Sahi 10 digit mobile number likhein.'); return; } if (authOK(m)) loadTrack(m); else { loadTrack(m, undefined, true); openLogin(m); } });
+$('tMobile').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('tGo').click(); } });
+setInterval(() => { if (T.mobile) { drawTrackList(); if (T.open) drawDetail(); } }, 30000);
+
+function openDetail(k) { T.open = k; $('ov').classList.remove('hide'); document.body.style.overflow = 'hidden'; drawCartBar(); drawDetail(); $('ov').scrollTop = 0; }
+function closeDetail() { T.open = null; $('ov').classList.add('hide'); document.body.style.overflow = ''; drawCartBar(); }
+$('ovX').addEventListener('click', closeDetail);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { if (!$('ovLogin').classList.contains('hide')) closeLogin(); else if (T.open) closeDetail(); else if (!$('ovCart').classList.contains('hide')) closeCart(); } });
+
+function drawDetail() {
+  const o = T.orders[T.open]; if (!o) { closeDetail(); return; }
+  const idx = stageIdx(o), isDead = dead(o), keepY = $('ov').scrollTop;
+  $('ovT').textContent = o.orderNumber; $('ovS').textContent = fmtDT(o.createdAt);
+  $('ovB').innerHTML = '<span class="badge ' + stClass(o.status) + '">' + esc(stLabel(o.status)) + '</span>';
+  const log = {}; arr(o.trackLog).forEach(l => { if (l && l.id) log[l.id] = l; });
+  let h = '';
+  if (isDead) h += '<div class="banner err">❌ Ye order ' + (o.status === 'Rejected' ? 'reject' : 'cancel') + ' ho gaya hai.' + (o.reason ? '<br>Karan: ' + esc(o.reason) : '') + '</div>';
+  else {
+    const d = dueMs(o), cls = o.status === 'Ready' || o.status === 'Delivered' ? 'ready' : (d === null ? 'wait' : '');
+    let big = '', sm = '', bigHtml = '';
+    if (o.status === 'Delivered') { big = '✅ Handover Done'; sm = 'Dhanyawad! Phir milte hain.'; }
+    else if (o.status === 'Ready') { big = '🎉 Ready for Pickup'; sm = 'Kripya dukaan se collect karein.'; }
+    else if (d === null) { big = '⏳ Confirmation Pending'; sm = 'Dukaan confirm karegi, phir ~' + etaTxt(o.etaMin) + ' ka timer chalega.'; }
+    else { bigHtml = '⏱ <span class="cd" data-cd="' + d + '">' + cdTxt(d - Date.now()) + '</span>'; sm = d - Date.now() > 0 ? fmtT(d) + ' tak ready hoga' : 'Aapka kaam aakhri stage mein hai'; }
+    h += `<div class="eta-box ${cls}"><div class="big">${bigHtml || esc(big)}</div><div class="sm">${esc(sm)}</div></div>`;
+  }
+  h += '<div class="card"><h3>📍 Order Tracking</h3><div class="tl">' + S.stages.map((s, i) => {
+    const c = isDead ? (i <= idx ? 'done' : '') : (i < idx ? 'done' : (i === idx ? 'cur' : '')), lg = log[s.id];
+    return '<div class="s ' + c + '"><div class="d">' + (c === 'done' ? '✓' : (i + 1)) + '</div><div class="n">' + esc(s.name) + '</div>' + (lg && i <= idx ? '<div class="t">' + esc(fmtDT(lg.at)) + '</div>' + (lg.note ? '<div class="nt">' + esc(lg.note) + '</div>' : '') : '') + '</div>';
+  }).join('') + '</div></div>';
+  h += '<div class="card"><h3>🧵 Order Details</h3>' + (o.slotLabel ? '<div class="br"><span>🕒 Aapka slot</span><b>' + esc(o.slotLabel) + '</b></div>' : '') + (o.offer ? '<div class="br"><span>🎁 Offer<small>' + esc(o.offer.title) + (o.offer.code ? ' (' + esc(o.offer.code) + ')' : '') + '</small></span><b style="color:#15803d">' + (num(o.estDiscount) > 0 ? '- ' + money(o.estDiscount) : 'Applied') + '</b></div>' : '') + arr(o.lines).map(l => '<div class="br"><span>' + esc((num(l.qty) > 1 ? l.qty + '× ' : '') + [l.item, l.service].filter(Boolean).join(' – ')) + (l.note ? '<small>' + esc(l.note) + '</small>' : '') + '</span>' + (o.bill ? '' : '<b>' + (l.custom ? 'Quote' : money(num(l.rate) * (num(l.qty) || 1))) + '</b>') + '</div>').join('') + (o.notes ? '<div class="br"><span>Aapki note<small>' + esc(o.notes) + '</small></span></div>' : '') + '</div>';
+  if (o.bill) {
+    const b = o.bill, bl = arr(b.lines), sub = bl.reduce((t, l) => t + num(l.amount), 0), disc = Math.min(num(b.discount), sub), total = r2(sub - disc);
+    const paid = r2(arr(b.payments).reduce((t, p) => t + num(p.amount), 0)), bal = Math.max(0, r2(total - paid));
+    h += '<div class="card"><h3>💰 Bill ' + esc(b.billNo || o.orderNumber) + '</h3>' + bl.map(l => '<div class="br"><span>' + esc((num(l.qty) > 1 ? l.qty + '× ' : '') + [l.item, l.service].filter(Boolean).join(' – ')) + (l.note ? '<small>' + esc(l.note) + '</small>' : '') + '</span><b>' + money(l.amount) + '</b></div>').join('')
+      + (disc > 0 ? '<div class="bt2"><span>Discount</span><b>- ' + money(disc) + '</b></div>' : '') + '<div class="bt2 big"><span>Total</span><b>' + money(total) + '</b></div><div class="bt2 grn"><span>Jama (Paid)</span><b>' + money(paid) + '</b></div><div class="bt2 red"><span>Baaki (Balance)</span><b>' + (bal > 0.009 ? money(bal) : '✓ Clear') + '</b></div>'
+      + (b.note ? '<div class="banner info" style="margin:10px 0 0">💬 ' + esc(b.note) + '</div>' : '');
+    if (bal > 0.009 && (S.upi || S.upiQr) && !isDead) {
+      h += '<div class="paybox"><div class="pt">💳 Payment Karein</div><div class="pa">Baaki: <b>' + money(bal) + '</b></div>'
+        + (S.upiQr ? '<img class="qrimg" id="qrImg" src="' + esc(S.upiQr) + '" alt="Payment QR code">' : '')
+        + (S.upi ? '<div class="upirow"><div><div class="l" style="margin:0">GPay / UPI ID' + (S.upiName ? ' · ' + esc(S.upiName) : '') + '</div><b class="upiid">' + esc(S.upi) + '</b></div><button type="button" class="btn dk" data-copy="' + esc(S.upi) + '" style="padding:10px 14px;font-size:.85rem">📋 Copy</button></div>' : '')
+        + '</div>';
+    }
+    h += '</div>';
+  }
+  $('ovBody').innerHTML = h; $('ov').scrollTop = keepY; tickCountdowns();
+}
+
+
+/* ================= ALERTS: voice + notification bar + alarm ring (Uc6 style) ================= */
+const MISS_MS = 15 * 60 * 1000, RING_MAX = 120000;
+const AL_DEF = { customerOn: true, pre: 5, voice: true, ring: true, notify: true, onConfirm: true,
+  readyText: '{name} जी, आपका ऑर्डर {no} तैयार है। कृपया {shop} से ले जाएं।',
+  preText: '{name} जी, आपका ऑर्डर {no} लगभग {min} मिनट में तैयार हो जाएगा।',
+  confirmText: '{name} जी, आपकी बुकिंग {no} कन्फर्म हो गई है। ऑर्डर {eta} में तैयार होगा।' };
+const A = { ctx: null, voice: null, speechOK: false, sw: null, ringing: [], timer: null, ticks: 0, t0: 0, snz: [], acked: lsGet('instaAcked', {}), standby: lsGet('instaStandby', false), wl: null, keep: null };
+const alG = () => Object.assign({}, AL_DEF, S.alerts || {});
+const alCfg = o => { const g = alG(), b = (o && o.bill) || {}; return { on: g.customerOn !== false && b.alertOn !== false, pre: b.preMin != null && b.preMin !== '' ? Math.max(0, num(b.preMin)) : num(g.pre) }; };
+function fillTxt(t, o, ex, spoken) {
+  return String(t || '').replace(/\{(\w+)\}/g, (m, k) => {
+    const v = { name: o.customerName, no: spoken ? String(o.orderNumber).replace(/INS-?/i, 'इंस ') : o.orderNumber, shop: S.shopName || DEF.shopName, min: ex && ex.min, eta: ex && ex.eta }[k];
+    return v === undefined || v === null ? '' : v;
+  });
+}
+function ensureAudio() { try { const AC = window.AudioContext || window.webkitAudioContext; if (AC && !A.ctx) A.ctx = new AC(); if (A.ctx && A.ctx.state === 'suspended') A.ctx.resume(); } catch (e) { } }
+function beep() {
+  try { ensureAudio(); if (!A.ctx) return;
+    [880, 1175, 1760].forEach((f, i) => { const o = A.ctx.createOscillator(), g = A.ctx.createGain(), t = A.ctx.currentTime + i * .2;
+      o.type = 'sawtooth'; o.frequency.setValueAtTime(f, t); g.gain.setValueAtTime(.5, t); g.gain.exponentialRampToValueAtTime(.01, t + .18); o.connect(g); g.connect(A.ctx.destination); o.start(t); o.stop(t + .18); });
+  } catch (e) { }
+}
+function pickVoice() { if (!('speechSynthesis' in window)) return; const v = speechSynthesis.getVoices() || []; A.voice = v.find(x => /^hi[-_]IN$/i.test(x.lang)) || v.find(x => /^hi/i.test(x.lang)) || v.find(x => /^en[-_]IN$/i.test(x.lang)) || null; }
+if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function unlockSpeech() { if (A.speechOK || !('speechSynthesis' in window)) return; try { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; speechSynthesis.speak(u); A.speechOK = true; } catch (e) { } }
+function speak(text) {
+  if (!('speechSynthesis' in window) || !text) return;
+  try { speechSynthesis.cancel(); if (speechSynthesis.paused) speechSynthesis.resume(); if (!A.voice) pickVoice();
+    setTimeout(() => { const u = new SpeechSynthesisUtterance(text); u.rate = .95; u.volume = 1; if (A.voice) { u.voice = A.voice; u.lang = A.voice.lang; } else u.lang = 'hi-IN'; speechSynthesis.speak(u); }, 120); } catch (e) { }
+}
+const ICON = 'data:image/svg+xml;utf8,' + encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='#16a34a'/><text x='50' y='68' font-size='56' text-anchor='middle'>⚡</text></svg>");
+async function getReg() {
+  if (A.sw) return A.sw;
+  if (!('serviceWorker' in navigator) || !/^https?:$/.test(location.protocol)) return null;
+  try { await navigator.serviceWorker.register('insta-sw.js'); A.sw = await navigator.serviceWorker.ready; } catch (e) { return null; }
+  return A.sw;
+}
+const permOK = () => ('Notification' in window) && Notification.permission === 'granted';
+async function notify(title, body, tag, actions) {
+  if (!permOK() || alG().notify === false) return;
+  const opts = { body, icon: ICON, badge: ICON, tag: tag || 'insta-alert', renotify: true, requireInteraction: !!actions, vibrate: [400, 150, 400, 150, 800], lang: 'hi-IN', data: { url: location.href } };
+  if (actions) opts.actions = [{ action: 'stop', title: '🛑 Stop' }, { action: 'snooze', title: '⏱️ 5 मिनट' }];
+  try { const r = await getReg(); if (r && r.showNotification) { await r.showNotification(title, opts); return; } } catch (e) { }
+  try { delete opts.actions; new Notification(title, opts); } catch (e) { }
+}
+function updateAlertChips() {
+  const p = ('Notification' in window) ? Notification.permission : 'unsupported', g = alG();
+  const row = (ic, nm, on, txt) => '<div class="srow"><span class="si">' + ic + '</span><span class="sn">' + nm + '</span><span class="sv ' + (on ? 'on' : 'off') + '">' + txt + '</span></div>';
+  $('alChips').innerHTML = row('🔔', 'Notification', p === 'granted', p === 'granted' ? 'ON' : p === 'denied' ? 'Blocked' : 'OFF')
+    + row('🗣', 'Voice', g.voice !== false, g.voice !== false ? 'ON' : 'OFF') + row('⏰', 'Alarm', g.ring !== false, g.ring !== false ? 'ON' : 'OFF') + row('💤', 'Standby', !!A.standby, A.standby ? 'ON' : 'OFF');
+  drawClocks();
+}
+function drawClocks() {
+  const el = $('alClocks'); if (!el) return;
+  const list = Object.keys(T.orders || {}).map(k => T.orders[k]).filter(o => o && !['Rejected', 'Cancelled', 'Ready', 'Delivered'].includes(o.status) && dueMs(o) && dueMs(o) > Date.now());
+  el.innerHTML = list.map(o => '<button type="button" class="btn bl full" data-clock="' + dueMs(o) + '" data-no="' + esc(o.orderNumber) + '" style="margin-top:8px;padding:11px">📲 Phone alarm · ' + esc(o.orderNumber) + ' · ' + esc(fmtT(dueMs(o))) + '</button>').join('');
+}
+async function enableAlerts(msgs) {
+  // permission popup PEHLE (user-tap ke turant baad), baaki kaam uske baad — warna iPhone/Safari popup block kar deta hai
+  let pr = null;
+  if (('Notification' in window) && Notification.permission === 'default') {
+    try { pr = new Promise(res => { const r = Notification.requestPermission(res); if (r && r.then) r.then(res, res); }); } catch (e) { }
+  }
+  ensureAudio(); unlockSpeech();
+  if (pr) await pr;
+  getReg();
+  updateAlertChips(); updatePermBanner();
+  if (!('Notification' in window)) { if (msgs) toast('Is browser mein notification nahi hai, awaaz + alarm chalega.', 4500); return; }
+  if (permOK()) { if (msgs) toast('Alerts chalu! Awaaz + notification aayega 🔔'); }
+  else if (msgs && Notification.permission === 'denied') toast('Blocked hai: browser ke 🔒 icon > Permissions > Notifications > Allow', 5500);
+}
+const isIOS = () => /iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const isStandalone = () => (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+const inAppBrowser = () => /FBAN|FBAV|Instagram|WhatsApp|Snapchat|Line\/|MicroMessenger|; wv\)|GSA\//i.test(navigator.userAgent);
+function updatePermBanner() {
+  const el = $('notifBanner'); if (!el) return;
+  const sup = 'Notification' in window, perm = sup ? Notification.permission : 'unsupported';
+  if (perm === 'granted') { el.classList.add('hide'); return; }
+  let h = '';
+  if (perm === 'default') h = '<div class="nt">Notification allow karein.<div><button type="button" class="btn am" id="npAllow">🔔 Allow</button></div></div>';
+  else if (perm === 'denied') h = '<div class="nt">Notification blocked hai. Browser site settings mein Allow karein.<div><button type="button" class="btn dk" id="npReload">🔄 Reload</button></div></div>';
+  else if (!window.isSecureContext && /^http:$/.test(location.protocol)) h = '<div class="nt">Notification ke liye https link chahiye.</div>';
+  else if (inAppBrowser()) h = '<div class="nt">Chrome / Safari mein kholein.<div><button type="button" class="btn dk" id="npCopy">🔗 Link Copy</button></div></div>';
+  else if (isIOS() && !isStandalone()) h = '<div class="nt">Share → Add to Home Screen, phir wahan se kholein.</div>';
+  else h = '<div class="nt">Is browser mein notification available nahi.</div>';
+  el.innerHTML = h; el.classList.remove('hide');
+}
+$('notifBanner').addEventListener('click', e => {
+  const t = e.target;
+  if (t.closest('#npAllow')) enableAlerts(true);
+  else if (t.closest('#npReload')) location.reload();
+  else if (t.closest('#npCopy')) { const u = location.href.split('#')[0]; if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(u).then(() => toast('Link copy ho gaya. Chrome/Safari mein paste karein.', 4000), () => prompt('Link copy karein:', u)); else prompt('Link copy karein:', u); }
+});
+try { if (navigator.permissions && navigator.permissions.query) navigator.permissions.query({ name: 'notifications' }).then(pm => { pm.onchange = () => { updateAlertChips(); updatePermBanner(); }; }).catch(() => { }); } catch (e) { }
+/* --- ringing --- */
+function startRing(list, title) {
+  list.forEach(a => { if (!A.ringing.some(r => r.id === a.id)) A.ringing.push(a); });
+  const g = alG(), txt = A.ringing.map(r => r.text).join('  •  ');
+  $('ring-title').textContent = title || '🎉 Aapka order ready hai!'; $('ring-txt').textContent = txt; $('ring').classList.add('show');
+  const say = () => { if (g.voice !== false) speak(A.ringing.map(r => r.spoken).join('। ')); };
+  if (g.ring !== false) beep(); say();
+  notify('⚡ ' + (S.shopName || DEF.shopName), txt, 'insta-ring', true);
+  try { navigator.vibrate && navigator.vibrate([400, 150, 400, 150, 800]); } catch (e) { }
+  A.ticks = 0; A.t0 = Date.now(); clearInterval(A.timer);
+  A.timer = setInterval(() => {
+    if (Date.now() - A.t0 > RING_MAX) { clearInterval(A.timer); A.timer = null; return; }
+    if (g.ring !== false) beep(); A.ticks++;
+    if (A.ticks % 4 === 0 && !(window.speechSynthesis && speechSynthesis.speaking)) say();
+    if (A.ticks % 20 === 0) notify('⚡ ' + (S.shopName || DEF.shopName), txt, 'insta-ring', true);
+  }, 1500);
+}
+async function stopRing() {
+  clearInterval(A.timer); A.timer = null; A.ringing = []; $('ring').classList.remove('show');
+  try { speechSynthesis.cancel(); } catch (e) { } try { navigator.vibrate && navigator.vibrate(0); } catch (e) { }
+  try { const r = await getReg(); if (r) (await r.getNotifications({ tag: 'insta-ring' })).forEach(n => n.close()); } catch (e) { }
+}
+function snoozeRing(min) {
+  const list = A.ringing.slice(); stopRing();
+  list.forEach(r => A.snz.push(Object.assign({}, r, { at: Date.now() + min * 60000 })));
+  if (list.length) toast('⏱ ' + min + ' minute baad phir bajega');
+}
+$('ringStop').addEventListener('click', stopRing);
+$('ringSnz').addEventListener('click', () => snoozeRing(5));
+if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', e => { if (!e.data) return; if (e.data.type === 'stop') stopRing(); if (e.data.type === 'snooze') snoozeRing(5); });
+/* --- engine --- */
+function readyAt(o) {
+  if (o.status !== 'Ready' && o.status !== 'Delivered') return null;
+  const rs = S.stages.find(s => s.type === 'ready'); let t = NaN;
+  if (rs) { const lg = arr(o.trackLog).find(l => l && l.id === rs.id); if (lg) t = Date.parse(lg.at); }
+  if (isNaN(t)) t = Date.parse(o.lastUpdated);
+  return isNaN(t) ? Date.now() : t;
+}
+function alertEvents(k, o) {
+  if (dead(o)) return [];
+  const c = alCfg(o), g = alG(); if (!c.on) return [];
+  const ev = [], d = dueMs(o), ra = readyAt(o), ct = o.confirmedAt ? Date.parse(o.confirmedAt) : NaN;
+  if (g.onConfirm !== false && !isNaN(ct)) ev.push({ key: k + ':conf', time: ct, type: 'conf' });
+  const early = ra !== null && !isNaN(ra) && (d === null || ra < d);   // shop ne time se pehle Ready mark kiya
+  if (d !== null && !early) ev.push({ key: k + ':due:' + d, time: d, type: 'due', k });                 // ETA poora hua -> ring
+  if (ra !== null && !isNaN(ra)) ev.push({ key: k + ':ready:' + ra, time: ra, type: 'ready', k, d });    // shop ne Ready mark kiya
+  if (c.pre > 0 && d !== null && !early) ev.push({ key: k + ':pre:' + d, time: d - c.pre * 60000, type: 'pre', due: d });
+  return ev;
+}
+function saveAcked() { const cut = Date.now() - 3 * 86400000; Object.keys(A.acked).forEach(k => { if (A.acked[k] < cut) delete A.acked[k]; }); lsSet('instaAcked', A.acked); }
+function fireAlert(o, ev) {
+  const g = alG();
+  if (ev.type === 'due' || ev.type === 'ready') {
+    const item = { id: ev.key, text: fillTxt(g.readyText, o), spoken: fillTxt(g.readyText, o, null, true) };
+    // ETA wali ring abhi (3 min ke andar) baj chuki ho to "Ready mark" par dubara ring nahi, sirf voice + notification
+    const dueKey = ev.type === 'ready' && ev.d != null ? ev.k + ':due:' + ev.d : null;
+    if (dueKey && A.acked[dueKey] && Date.now() - A.acked[dueKey] < 3 * 60000) {
+      if (g.ring !== false) beep(); if (g.voice !== false) speak(item.spoken); notify('⚡ ' + (S.shopName || DEF.shopName), '✅ Ready for Pickup – ' + item.text, 'insta-rdy-' + o.orderNumber, false); toast('✅ ' + item.text, 7000);
+    } else startRing([item]);
+    return;
+  }
+  const ex = ev.type === 'pre' ? { min: Math.max(1, Math.round((ev.due - Date.now()) / 60000)) } : { eta: etaTxt(o.bill && o.bill.etaMin != null ? o.bill.etaMin : o.etaMin) };
+  const tpl = ev.type === 'pre' ? g.preText : g.confirmText, txt = fillTxt(tpl, o, ex), sp = fillTxt(tpl, o, ex, true);
+  if (g.ring !== false) beep(); if (g.voice !== false) speak(sp);
+  notify('⚡ ' + (S.shopName || DEF.shopName), txt, 'insta-' + ev.type + '-' + o.orderNumber, false);
+  toast('🔔 ' + txt, 7000);
+}
+function checkAlerts() {
+  const now = Date.now(), due = A.snz.filter(s => s.at <= now);
+  if (due.length) { A.snz = A.snz.filter(s => s.at > now); startRing(due); }
+  let ch = false;
+  Object.keys(T.orders).forEach(k => {
+    const o = T.orders[k];
+    alertEvents(k, o).forEach(ev => {
+      if (A.acked[ev.key] || now < ev.time) return;
+      A.acked[ev.key] = now; ch = true;
+      if (now - ev.time > MISS_MS) return;
+      if (ev.type === 'pre' && (now >= ev.due || o.status === 'Ready' || o.status === 'Delivered')) return;
+      if (ev.type === 'due' && (o.status === 'Ready' || o.status === 'Delivered')) return;
+      fireAlert(o, ev);
+    });
+  });
+  if (ch) saveAcked();
+}
+function startTick() {
+  try { const b = new Blob(['setInterval(function(){postMessage(1)},1000)'], { type: 'application/javascript' }); const w = new Worker(URL.createObjectURL(b)); w.onmessage = checkAlerts; }
+  catch (e) { setInterval(checkAlerts, 1000); }
+}
+/* --- standby: screen awake + background keep-alive --- */
+function silentWav() {
+  const sr = 8000, n = sr, buf = new Uint8Array(44 + n), dv = new DataView(buf.buffer), w = (o, s) => { for (let i = 0; i < s.length; i++) buf[o + i] = s.charCodeAt(i); };
+  w(0, 'RIFF'); dv.setUint32(4, 36 + n, true); w(8, 'WAVE'); w(12, 'fmt '); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true); dv.setUint16(22, 1, true);
+  dv.setUint32(24, sr, true); dv.setUint32(28, sr, true); dv.setUint16(32, 1, true); dv.setUint16(34, 8, true); w(36, 'data'); dv.setUint32(40, n, true); buf.fill(128, 44);
+  return URL.createObjectURL(new Blob([buf], { type: 'audio/wav' }));
+}
+async function acquireWake() { try { if ('wakeLock' in navigator && !A.wl) { A.wl = await navigator.wakeLock.request('screen'); A.wl.addEventListener('release', () => { A.wl = null; }); } } catch (e) { } }
+async function setStandby(on, quiet) {
+  A.standby = on; lsSet('instaStandby', on);
+  if (on) {
+    ensureAudio(); unlockSpeech(); await acquireWake();
+    try { if (!A.keep) { A.keep = new Audio(silentWav()); A.keep.loop = true; A.keep.volume = .01; } await A.keep.play();
+      if ('mediaSession' in navigator) navigator.mediaSession.metadata = new MediaMetadata({ title: 'Ready Alert Standby chalu', artist: S.shopName || DEF.shopName }); } catch (e) { }
+    if (!quiet) toast('Standby chalu! Screen jaagti rahegi aur alert time par bajega 💤');
+  } else {
+    try { if (A.wl) { await A.wl.release(); A.wl = null; } } catch (e) { } try { if (A.keep) A.keep.pause(); } catch (e) { }
+    if (!quiet) toast('Standby band');
+  }
+  updateAlertChips();
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { checkAlerts(); if (A.standby) { acquireWake(); try { A.keep && A.keep.play().catch(() => { }); } catch (e) { } } } });
+document.addEventListener('click', () => { ensureAudio(); unlockSpeech(); }, true);
+/* --- phone clock (Android real alarm) --- */
+function nativeClock(ms, label) {
+  const d = new Date(+ms);
+  if (/android/i.test(navigator.userAgent)) {
+    const url = 'intent:#Intent;action=android.intent.action.SET_ALARM;i.android.intent.extra.alarm.HOUR=' + d.getHours() + ';i.android.intent.extra.alarm.MINUTES=' + d.getMinutes() + ';S.android.intent.extra.alarm.MESSAGE=' + encodeURIComponent(String(label).slice(0, 60)) + ';B.android.intent.extra.alarm.SKIP_UI=true;end';
+    toast('📲 Clock app mein alarm ' + fmtT(d)); window.location.href = url;
+  } else toast('📲 Ye suvidha sirf Android phone par hai');
+}
+$('ovBody').addEventListener('click', e => {
+  const q = e.target.closest('#qrImg'); if (q) { q.classList.toggle('big'); return; }
+  const c = e.target.closest('[data-copy]');
+  if (c) { const t = c.dataset.copy; const ok = () => toast('UPI ID copy ho gayi: ' + t, 3500); if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok, () => prompt('UPI ID copy karein:', t)); else prompt('UPI ID copy karein:', t); return; }
+  const b = e.target.closest('[data-clock]'); if (b) nativeClock(b.dataset.clock, 'Navrose order ' + b.dataset.no + ' ready'); });
+async function testAlert() {
+  await enableAlerts(false);
+  const o = { customerName: 'Aap', orderNumber: 'INS-0000' };
+  startRing([{ id: 'test' + Date.now(), text: fillTxt(alG().readyText, o), spoken: fillTxt(alG().readyText, o, null, true) }], '🔊 Test Alert');
+}
+$('alEnable').addEventListener('click', () => enableAlerts(true));
+$('alStandby').addEventListener('click', () => setStandby(!A.standby));
+$('alTest').addEventListener('click', testAlert);
+
+
+/* ---------- LOGIN (WhatsApp OTP, registered mobile) ---------- */
+function sha256(ascii) {
+  const rr = (v, a) => (v >>> a) | (v << (32 - a)), mp = Math.pow, mw = mp(2, 32);
+  let i, j, result = '';
+  const words = [], bl = ascii.length * 8; let hash = [], k = [], pc = 0; const comp = {};
+  for (let c = 2; pc < 64; c++) { if (!comp[c]) { for (i = 0; i < 313; i += c) comp[i] = c; hash[pc] = (mp(c, .5) * mw) | 0; k[pc++] = (mp(c, 1 / 3) * mw) | 0; } }
+  ascii += '\x80'; while (ascii.length % 64 - 56) ascii += '\x00';
+  for (i = 0; i < ascii.length; i++) { j = ascii.charCodeAt(i); words[i >> 2] |= j << ((3 - i) % 4) * 8; }
+  words[words.length] = ((bl / mw) | 0); words[words.length] = bl;
+  for (j = 0; j < words.length;) {
+    const w = words.slice(j, j += 16), old = hash; hash = hash.slice(0, 8);
+    for (i = 0; i < 64; i++) {
+      const w15 = w[i - 15], w2 = w[i - 2], a = hash[0], e = hash[4];
+      const t1 = hash[7] + (rr(e, 6) ^ rr(e, 11) ^ rr(e, 25)) + ((e & hash[5]) ^ ((~e) & hash[6])) + k[i] + (w[i] = (i < 16) ? w[i] : (w[i - 16] + (rr(w15, 7) ^ rr(w15, 18) ^ (w15 >>> 3)) + w[i - 7] + (rr(w2, 17) ^ rr(w2, 19) ^ (w2 >>> 10))) | 0);
+      const t2 = (rr(a, 2) ^ rr(a, 13) ^ rr(a, 22)) + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+      hash = [(t1 + t2) | 0].concat(hash); hash[4] = (hash[4] + t1) | 0;
+    }
+    for (i = 0; i < 8; i++) hash[i] = (hash[i] + old[i]) | 0;
+  }
+  for (i = 0; i < 8; i++) for (j = 3; j + 1; j--) { const b = (hash[i] >> (j * 8)) & 255; result += (b < 16 ? 0 : '') + b.toString(16); }
+  return result;
+}
+const otpHash = (m, otp) => sha256(m + ':' + otp + ':navrose');
+const genOtp = () => { try { const a = new Uint32Array(1); crypto.getRandomValues(a); return String(100000 + a[0] % 900000); } catch (e) { return String(100000 + Math.floor(Math.random() * 900000)); } };
+const AUTH_DAYS = 30;
+function getAuth() { const a = lsGet('instaAuth', null); return a && a.m && Date.now() - a.at < AUTH_DAYS * 86400000 ? a : null; }
+const authOK = m => { const a = getAuth(); return !!a && a.m === m; };
+const L = { m: '', step: 1, mode: '', after: null, ref: null, sentAt: 0, cdT: null, msg: '' };
+function drawLoginChip() {
+  const a = getAuth(); $('loginChip').textContent = a ? '👤 ' + a.m.slice(-4) : 'Login';
+  $('trkOut').classList.toggle('hide', !!a); $('trkIn').classList.toggle('hide', !a); $('trkCard').classList.toggle('hide', !!a);
+  if (a) { $('trkM').textContent = '+91 ' + a.m; $('tMobile').value = a.m; if (REG.m !== a.m) lookupReg(a.m); }
+  drawProfile();
+}
+function openLogin(m, after) {
+  L.m = m || normMobile($('tMobile').value) || lsGet('instaMobile', '') || ''; L.step = 1; L.after = after || null; L.mode = '';
+  $('ovLogin').classList.remove('hide'); document.body.style.overflow = 'hidden'; drawCartBar(); drawLogin();
+}
+function closeLogin() {
+  $('ovLogin').classList.add('hide'); document.body.style.overflow = ($('ov').classList.contains('hide') && $('ovCart').classList.contains('hide')) ? '' : 'hidden';
+  if (L.ref) { try { L.ref.off(); } catch (e) { } L.ref = null; } clearInterval(L.cdT); drawCartBar();
+}
+$('lgX').addEventListener('click', closeLogin);
+$('loginChip').addEventListener('click', () => { if (getAuth()) { if (confirm('Logout karein?')) logout(); } else openLogin(); });
+$('tOut').addEventListener('click', () => { if (confirm('Logout karein?')) logout(); });
+function logout() { lsSet('instaAuth', null); drawLoginChip(); detach(); T.mobile = null; $('tList').innerHTML = ''; toast('Logout ho gaye.'); const m = normMobile(lsGet('instaMobile', '')); if (m && lsGet('instaMy', []).length) loadTrack(m, undefined, true); }
+function drawLogin() {
+  let h = '';
+  if (L.step === 1) {
+    h = `<div class="card"><h3>📲 WhatsApp OTP se Login</h3><div class="f"><input id="lgMobile" class="in" type="tel" inputmode="numeric" maxlength="14" placeholder="Registered mobile number" value="${esc(L.m)}"></div>
+      <button type="button" class="btn gr full" id="lgSend">📲 WhatsApp par OTP Bhejein</button></div>`;
+  } else {
+    const ph = String(S.phone || '').replace(/\D/g, '').slice(-10);
+    h = `<div class="card"><h3>🔑 OTP Daalein</h3>
+      <div class="banner ${L.mode === 'api' ? 'info' : 'warn'}" id="lgStat" style="margin-bottom:12px">${L.msg}</div>
+      <div class="hint" style="margin:0 0 8px">Number: <b>+91 ${esc(L.m)}</b> · <a href="#" id="lgChange" style="color:#1d4ed8;font-weight:800">badlein</a></div>
+      <input id="lgOtp" class="in otpin" type="tel" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••">
+      <button type="button" class="btn dk full" id="lgVerify" style="margin-top:12px">✅ Verify &amp; Login</button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button type="button" class="btn gy" id="lgResend" style="flex:1;padding:11px;font-size:.85rem" disabled>Dobara OTP bhejein</button></div></div>`;
+  }
+  $('lgBody').innerHTML = h;
+  if (L.step === 2) { cdTick(); clearInterval(L.cdT); L.cdT = setInterval(cdTick, 1000); setTimeout(() => { const o = $('lgOtp'); if (o) o.focus(); }, 100); }
+}
+function cdTick() { const b = $('lgResend'); if (!b) { clearInterval(L.cdT); return; } const left = 60 - Math.floor((Date.now() - L.sentAt) / 1000); if (left > 0) { b.disabled = true; b.textContent = 'Dobara OTP (' + left + 's)'; } else { b.disabled = false; b.textContent = 'Dobara OTP bhejein'; } }
+async function sendOtp() {
+  const m = normMobile($('lgMobile') ? $('lgMobile').value : L.m);
+  if (!m) { toast('Sahi 10 digit mobile number likhein.'); return; }
+  if (!db) { toast('Server se connect nahi hai. Internet check karein.'); return; }
+  if (Date.now() - (lsGet('instaOtpAt', {})[m] || 0) < 60000 && L.step === 1) { const left = 60 - Math.floor((Date.now() - lsGet('instaOtpAt', {})[m]) / 1000); toast('OTP abhi bheja gaya hai. ' + left + ' second baad dobara try karein.'); L.m = m; L.step = 2; L.mode = L.mode || (S.otpApi ? 'api' : 'shop'); L.sentAt = lsGet('instaOtpAt', {})[m]; L.msg = 'OTP pehle hi bheja ja chuka hai. WhatsApp check karein.'; drawLogin(); return; }
+  const btn = $('lgSend') || $('lgResend'); if (btn) btn.disabled = true;
+  try {
+    L.m = m; lsSet('instaMobile', m); const at = lsGet('instaOtpAt', {}); at[m] = Date.now(); lsSet('instaOtpAt', at); L.sentAt = Date.now();
+    const tr = lsGet('instaOtpTry', {}); tr[m] = 0; lsSet('instaOtpTry', tr);
+    const expMin = Math.max(2, parseInt(S.otpMin, 10) || 10);
+    if (S.otpApi) {
+      const otp = genOtp();
+      await db.ref('instaOtp/' + m).set({ h: otpHash(m, otp), exp: Date.now() + expMin * 60000, at: Date.now(), by: 'app' });
+      const text = String(S.otpMsg || '{otp} aapka {shop} login OTP hai. {min} minute mein expire hoga. Kisi ko na batayein.').replace(/\{otp\}/g, otp).replace(/\{shop\}/g, S.shopName || DEF.shopName).replace(/\{min\}/g, expMin);
+      await fetch(S.otpApi, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify({ mobile: '91' + m, otp, text, shop: S.shopName || DEF.shopName, expMin }) });
+      L.mode = 'api'; L.msg = '✅ OTP WhatsApp par bhej diya gaya.';
+    } else {
+      await db.ref('instaOtp/' + m).set(null);
+      await db.ref('instaOtpReq/' + m).set({ at: Date.now(), status: 'pending', name: lsGet('instaName', '') });
+      L.mode = 'shop'; L.msg = '⏳ OTP WhatsApp par aa raha hai.';
+      if (L.ref) { try { L.ref.off(); } catch (e) { } }
+      L.ref = db.ref('instaOtpReq/' + m); L.ref.on('value', sn => { const v = sn.val(), st = $('lgStat'); if (!st) return; if (v && v.status === 'sent') { st.className = 'banner info'; st.innerHTML = '✅ OTP aapke WhatsApp <b>+91 ' + esc(m) + '</b> par bhej diya gaya hai. Check karein.'; } else if (v && v.status === 'rejected') { st.className = 'banner err'; st.innerHTML = '❌ Dukaan ne ye request reject kar di. Number check karein.'; } });
+    }
+    L.step = 2; drawLogin();
+  } catch (e) { console.error(e); toast('OTP request nahi ja payi. Internet check karke dobara try karein.', 4500); if (btn) btn.disabled = false; }
+}
+async function verifyOtp() {
+  const m = L.m, otp = String(($('lgOtp') || {}).value || '').replace(/\D/g, '');
+  if (otp.length !== 6) { toast('6 digit OTP likhein.'); return; }
+  const tr = lsGet('instaOtpTry', {}); if ((tr[m] || 0) >= 5) { toast('Bahut zyada galat try. Naya OTP mangayein.', 4500); return; }
+  const b = $('lgVerify'); if (b) b.disabled = true;
+  try {
+    const sn = await db.ref('instaOtp/' + m).once('value'), rec = sn.val();
+    if (!rec) { toast('Abhi koi OTP nahi bheja gaya. Thoda ruk kar dobara try karein.', 4500); if (b) b.disabled = false; return; }
+    if (Date.now() > num(rec.exp)) { toast('OTP expire ho gaya. Naya OTP mangayein.', 4500); if (b) b.disabled = false; return; }
+    if (otpHash(m, otp) !== rec.h) { tr[m] = (tr[m] || 0) + 1; lsSet('instaOtpTry', tr); toast('Galat OTP. ' + (5 - tr[m]) + ' mauke bache.', 3500); if (b) b.disabled = false; return; }
+    try { await db.ref('instaOtp/' + m).set(null); await db.ref('instaOtpReq/' + m).set(null); } catch (e) { }
+    lsSet('instaAuth', { m, at: Date.now() }); lsSet('instaMobile', m);
+    const cb = L.after; closeLogin(); drawLoginChip(); toast('✅ Login ho gaya! Swagat hai.');
+    if ($('v-track').classList.contains('hide') && !cb) { /* stay */ }
+    if (cb) cb(); else { loadTrack(m); }
+  } catch (e) { console.error(e); toast('Verify nahi ho paya. Dobara try karein.'); if (b) b.disabled = false; }
+}
+$('lgBody').addEventListener('click', e => {
+  const t = e.target;
+  if (t.closest('#lgSend') || t.closest('#lgResend')) { if (t.closest('#lgResend')) { L.step = 1; } sendOtp(); }
+  else if (t.closest('#lgVerify')) verifyOtp();
+  else if (t.closest('#lgChange')) { e.preventDefault(); if (L.ref) { try { L.ref.off(); } catch (x) { } L.ref = null; } clearInterval(L.cdT); L.step = 1; drawLogin(); }
+});
+$('lgBody').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); if ($('lgVerify')) verifyOtp(); else if ($('lgSend')) sendOtp(); } });
+$('lgBody').addEventListener('input', e => { if (e.target.id === 'lgOtp' && e.target.value.replace(/\D/g, '').length === 6) verifyOtp(); });
+
+/* ---------- boot ---------- */
+(function boot() {
+  drawShop(); drawCartBar(); initFirebase(); updateAlertChips(); startTick(); getReg();
+  const p = new URLSearchParams(location.search), m = normMobile(p.get('m')), saved = lsGet('instaMobile', '');
+  $('tMobile').value = m || saved || ''; drawLoginChip(); updatePermBanner();
+  if (m) { showView('track'); loadTrack(m, p.get('o') || undefined); if (!authOK(m)) setTimeout(() => { if (!Object.keys(T.orders).length) openLogin(m, () => loadTrack(m, p.get('o') || undefined)); }, 1500); }
+  else if (getAuth()) setTimeout(() => loadTrack(getAuth().m, undefined, true), 400);
+  else if (normMobile(saved) && lsGet('instaWatch', '')) setTimeout(() => loadTrack(normMobile(saved), undefined, true), 400);
+  if (A.standby) setStandby(true, true);
+})();
+</script>
+
+
+<script src="./script.js"></script></body></html>
